@@ -1,4 +1,6 @@
 #include <Arduino.h>
+#include <MemoryFree.h>
+#include <pgmStrToRAM.h>
 
 int switchState = 0;
 
@@ -32,4 +34,7 @@ void loop() {
 
     delay(250);
   }
+
+  Serial.println(freeMemory());
+  delay(250);
 }
