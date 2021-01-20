@@ -35,6 +35,5 @@ void loop() {
     delay(250);
   }
 
-  Serial.println(freeMemory());
   delay(250);
 }
