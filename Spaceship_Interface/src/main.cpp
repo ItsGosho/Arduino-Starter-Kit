@@ -26,14 +26,19 @@ void loop()
 {
   switchState = digitalRead(SWITCH_STATE_PIN_NUMBER);
 
-  if (switchState == LOW)
+  switch (switchState)
   {
+
+  case LOW:
+
     digitalWrite(LED_1_PIN_NUMBER, HIGH);
     digitalWrite(LED_2_PIN_NUMBER, LOW);
     digitalWrite(LED_3_PIN_NUMBER, LOW);
-  }
-  else
-  {
+
+    break;
+
+  case HIGH:
+
     digitalWrite(LED_1_PIN_NUMBER, LOW);
     digitalWrite(LED_2_PIN_NUMBER, LOW);
     digitalWrite(LED_3_PIN_NUMBER, HIGH);
@@ -44,6 +49,12 @@ void loop()
     digitalWrite(LED_3_PIN_NUMBER, LOW);
 
     delay(DELAY_INTERVALS_MS);
+
+    break;
+
+  default:
+    Serial.println((String) "Switch state: " + switchState + " is not yet handled!");
+    break;
   }
 
   delay(DELAY_INTERVALS_MS);
