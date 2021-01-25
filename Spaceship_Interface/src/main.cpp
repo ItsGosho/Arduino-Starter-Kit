@@ -12,6 +12,11 @@ const int LED_2_PIN_NUMBER = 4;
 const int LED_3_PIN_NUMBER = 5;
 const int SWITCH_STATE_PIN_NUMBER = 2;
 
+const int BLINK_TIMES = 10;
+const int BLINK_INTERVAL_MS = 300;
+
+void blinkLEDPort(int);
+
 void setup()
 {
   Serial.begin(SERIAL_BAUD);
@@ -20,6 +25,8 @@ void setup()
   pinMode(LED_2_PIN_NUMBER, OUTPUT);
   pinMode(LED_3_PIN_NUMBER, OUTPUT);
   pinMode(SWITCH_STATE_PIN_NUMBER, INPUT);
+
+  blinkLEDPort(LED_1_PIN_NUMBER);
 }
 
 void loop()
@@ -58,4 +65,15 @@ void loop()
   }
 
   delay(DELAY_INTERVALS_MS);
+}
+
+void blinkLEDPort(int portNumber)
+{
+  for (int i = 0; i < BLINK_TIMES; i++)
+  {
+    digitalWrite(LED_1_PIN_NUMBER, HIGH);
+    delay(BLINK_INTERVAL_MS);
+    digitalWrite(LED_1_PIN_NUMBER, LOW);
+    delay(BLINK_INTERVAL_MS);
+  }
 }
