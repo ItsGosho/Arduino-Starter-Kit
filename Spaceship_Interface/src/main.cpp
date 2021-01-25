@@ -12,7 +12,7 @@ const int LED_2_PIN_NUMBER = 4;
 const int LED_3_PIN_NUMBER = 5;
 const int SWITCH_STATE_PIN_NUMBER = 2;
 
-const int BLINK_TIMES = 10;
+const int BLINK_TIMES = 3;
 const int BLINK_INTERVAL_MS = 300;
 
 void blinkLEDPort(int);
