@@ -4,15 +4,16 @@
 
 int switchState = 0;
 
+const int SERIAL_BAUD = 9600;
+const int DELAY_INTERVALS_MS = 250;
+
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(SERIAL_BAUD);
   
   pinMode(3, OUTPUT);
   pinMode(4, OUTPUT);
   pinMode(5, OUTPUT);
   pinMode(2, INPUT);
-
-  Serial.println("Enabled port 3,4,5 as OUTPUT and 2 as INPUT");
 }
 
 void loop() {
@@ -27,13 +28,13 @@ void loop() {
     digitalWrite(4, LOW);
     digitalWrite(5, HIGH);
 
-    delay(250);
+    delay(DELAY_INTERVALS_MS);
 
     digitalWrite(4, HIGH);
     digitalWrite(5, LOW);
 
-    delay(250);
+    delay(DELAY_INTERVALS_MS);
   }
 
-  delay(250);
+  delay(DELAY_INTERVALS_MS);
 }
