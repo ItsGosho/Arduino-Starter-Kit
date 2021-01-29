@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <SerialPrintF.h>
 
 const int SERIAL_BAUD = 9600;
 const int TEMP_SENSOR_PIN_NUMBER = A0;
@@ -27,15 +28,10 @@ void setupPins()
 void loop()
 {
   int sensorVal = analogRead(TEMP_SENSOR_PIN_NUMBER);
-  Serial.print("Sensor Value: ");
-  Serial.print(sensorVal);
-
   float miliVoltage = convertAnalogReadToMiliVoltage(sensorVal);
-  Serial.print(", mV: ");
-  Serial.print(miliVoltage);
-  Serial.print(", degrees C: ");
   float temperature = convertMiliVoltageToTemperature(miliVoltage);
-  Serial.println(temperature);
+
+  serial_printf(Serial, "Sensor Value: %d, mV: %0f, %2f", sensorVal, miliVoltage, temperature);
 
   if (temperature < BASELINE_TEMP + 2)
   {
@@ -56,15 +52,17 @@ void loop()
     digitalWrite(4, HIGH);
   }
 
-  delay(1000);
+  delay(10000);
 }
 
 //How to describe the 5.0 - Volts?!
 //The maximum analogRead is 1023 (10 bit - 1)
-float convertAnalogReadToMiliVoltage(int analogRead) {
+float convertAnalogReadToMiliVoltage(int analogRead)
+{
   return analogRead * (5.0 / 1024.0) * 1000;
 }
 
-float convertMiliVoltageToTemperature(int mV) {
+float convertMiliVoltageToTemperature(int mV)
+{
   return (mV - 500.0) / 10;
 }
