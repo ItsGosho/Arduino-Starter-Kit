@@ -3,6 +3,9 @@
 
 const int SERIAL_BAUD = 9600;
 const int TEMP_SENSOR_PIN_NUMBER = A0;
+const float TEMP_SENSOR_PIN_MAX_VOLTAGE = 5.0;
+const int TEMP_SENSOR_OFFSET_VOLTAGE = 0.500;
+const int ADC_MAX_RESOLUTION = 1024;
 const int LED_PIN_NUMBERS[3] = {2, 3, 4};
 const float BASELINE_TEMP = 20.0;
 const int LOOP_DELAY_MS = 1000;
@@ -54,8 +57,8 @@ void loop()
 float readTemperature(int sensorPinNumber)
 {
   int sensorVal = analogRead(TEMP_SENSOR_PIN_NUMBER);
-  float miliVoltage = sensorVal * (5.0 / 1024.0) * 1000;
-  float temperature = (miliVoltage - 500.0) / 10;
+  float miliVoltage = (sensorVal * (TEMP_SENSOR_PIN_MAX_VOLTAGE / ADC_MAX_RESOLUTION)) * 1000;
+  float temperature = (miliVoltage - TEMP_SENSOR_OFFSET_VOLTAGE) / 10.0;
 
   serial_printf(Serial, "[Reading Temperature] Sensor Value: %d, mV: %0f, Degrees: %2f\n", sensorVal, miliVoltage, temperature);
   return temperature;
