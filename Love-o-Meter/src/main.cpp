@@ -1,27 +1,31 @@
 #include <Arduino.h>
 
+const int SERIAL_BAUD = 9600;
 const int TEMP_SENSOR_PIN_NUMBER = A0;
+const int LED_PIN_NUMBERS[3] = {2, 3, 4};
 const float BASELINE_TEMP = 20.0;
 
 void setupPins(void);
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(SERIAL_BAUD);
+  setupPins();
+}
 
-  for (int pinNumber = 2; pinNumber < 5; pinNumber++)
+void setupPins()
+{
+  for (const int pinNumber : LED_PIN_NUMBERS)
   {
+    Serial.println(pinNumber);
     pinMode(pinNumber, OUTPUT);
     digitalWrite(pinNumber, LOW);
   }
 }
 
-void setupPins() {
-  
-}
-
 void loop()
 {
+  delay(10000);
   int sensorVal = analogRead(TEMP_SENSOR_PIN_NUMBER);
   Serial.print("Sensor Value: ");
   Serial.print(sensorVal);
@@ -39,7 +43,7 @@ void loop()
     digitalWrite(3, LOW);
     digitalWrite(4, LOW);
   }
-  else if (temperature >= BASELINE_TEMP + 2 && temperature < BASELINE_TEMP  + 4)
+  else if (temperature >= BASELINE_TEMP + 2 && temperature < BASELINE_TEMP + 4)
   {
     digitalWrite(2, HIGH);
     digitalWrite(3, LOW);
