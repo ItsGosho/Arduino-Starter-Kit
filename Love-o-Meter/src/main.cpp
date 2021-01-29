@@ -1,7 +1,9 @@
 #include <Arduino.h>
 
-const int sensorPin = A0;
-const float baselineTemp = 20.0;
+const int TEMP_SENSOR_PIN_NUMBER = A0;
+const float BASELINE_TEMP = 20.0;
+
+void setupPins(void);
 
 void setup()
 {
@@ -14,9 +16,13 @@ void setup()
   }
 }
 
+void setupPins() {
+  
+}
+
 void loop()
 {
-  int sensorVal = analogRead(sensorPin);
+  int sensorVal = analogRead(TEMP_SENSOR_PIN_NUMBER);
   Serial.print("Sensor Value: ");
   Serial.print(sensorVal);
 
@@ -27,19 +33,19 @@ void loop()
   float temperature = (voltage - .5) * 100;
   Serial.println(temperature);
 
-  if (temperature < baselineTemp + 2)
+  if (temperature < BASELINE_TEMP + 2)
   {
     digitalWrite(2, LOW);
     digitalWrite(3, LOW);
     digitalWrite(4, LOW);
   }
-  else if (temperature >= baselineTemp + 2 && temperature < baselineTemp + 4)
+  else if (temperature >= BASELINE_TEMP + 2 && temperature < BASELINE_TEMP  + 4)
   {
     digitalWrite(2, HIGH);
     digitalWrite(3, LOW);
     digitalWrite(4, LOW);
   }
-  else if (temperature >= baselineTemp + 6)
+  else if (temperature >= BASELINE_TEMP + 6)
   {
     digitalWrite(2, HIGH);
     digitalWrite(3, HIGH);
