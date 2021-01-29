@@ -5,8 +5,10 @@ const int SERIAL_BAUD = 9600;
 const int TEMP_SENSOR_PIN_NUMBER = A0;
 const int LED_PIN_NUMBERS[3] = {2, 3, 4};
 const float BASELINE_TEMP = 20.0;
+const int LOOP_DELAY_MS = 1000;
 
 void setupPins(void);
+float readTemperature(int);
 float convertAnalogReadToMiliVoltage(int);
 float convertMiliVoltageToTemperature(int);
 
@@ -27,11 +29,7 @@ void setupPins()
 
 void loop()
 {
-  int sensorVal = analogRead(TEMP_SENSOR_PIN_NUMBER);
-  float miliVoltage = convertAnalogReadToMiliVoltage(sensorVal);
-  float temperature = convertMiliVoltageToTemperature(miliVoltage);
-
-  serial_printf(Serial, "Sensor Value: %d, mV: %0f, %2f\n", sensorVal, miliVoltage, temperature);
+  float temperature = readTemperature(TEMP_SENSOR_PIN_NUMBER);
 
   if (temperature < BASELINE_TEMP + 2)
   {
@@ -52,7 +50,17 @@ void loop()
     digitalWrite(4, HIGH);
   }
 
-  delay(1000);
+  delay(LOOP_DELAY_MS);
+}
+
+float readTemperature(int sensorPinNumber)
+{
+  int sensorVal = analogRead(TEMP_SENSOR_PIN_NUMBER);
+  float miliVoltage = convertAnalogReadToMiliVoltage(sensorVal);
+  float temperature = convertMiliVoltageToTemperature(miliVoltage);
+
+  serial_printf(Serial, "[Reading Temperature] Sensor Value: %d, mV: %0f, Degrees: %2f\n", sensorVal, miliVoltage, temperature);
+  return temperature;
 }
 
 //How to describe the 5.0 - Volts?!
