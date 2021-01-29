@@ -9,8 +9,6 @@ const int LOOP_DELAY_MS = 1000;
 
 void setupPins(void);
 float readTemperature(int);
-float convertAnalogReadToMiliVoltage(int);
-float convertMiliVoltageToTemperature(int);
 
 void setup()
 {
@@ -56,21 +54,9 @@ void loop()
 float readTemperature(int sensorPinNumber)
 {
   int sensorVal = analogRead(TEMP_SENSOR_PIN_NUMBER);
-  float miliVoltage = convertAnalogReadToMiliVoltage(sensorVal);
-  float temperature = convertMiliVoltageToTemperature(miliVoltage);
+  float miliVoltage = sensorVal * (5.0 / 1024.0) * 1000;
+  float temperature = (miliVoltage - 500.0) / 10;
 
   serial_printf(Serial, "[Reading Temperature] Sensor Value: %d, mV: %0f, Degrees: %2f\n", sensorVal, miliVoltage, temperature);
   return temperature;
-}
-
-//How to describe the 5.0 - Volts?!
-//The maximum analogRead is 1023 (10 bit - 1)
-float convertAnalogReadToMiliVoltage(int analogRead)
-{
-  return analogRead * (5.0 / 1024.0) * 1000;
-}
-
-float convertMiliVoltageToTemperature(int mV)
-{
-  return (mV - 500.0) / 10;
 }
