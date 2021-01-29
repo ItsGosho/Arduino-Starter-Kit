@@ -6,6 +6,8 @@ const int LED_PIN_NUMBERS[3] = {2, 3, 4};
 const float BASELINE_TEMP = 20.0;
 
 void setupPins(void);
+float convertAnalogReadToMiliVoltage(int);
+float convertMiliVoltageToTemperature(int);
 
 void setup()
 {
@@ -17,7 +19,6 @@ void setupPins()
 {
   for (const int pinNumber : LED_PIN_NUMBERS)
   {
-    Serial.println(pinNumber);
     pinMode(pinNumber, OUTPUT);
     digitalWrite(pinNumber, LOW);
   }
@@ -25,16 +26,15 @@ void setupPins()
 
 void loop()
 {
-  delay(10000);
   int sensorVal = analogRead(TEMP_SENSOR_PIN_NUMBER);
   Serial.print("Sensor Value: ");
   Serial.print(sensorVal);
 
-  float voltage = (sensorVal / 1024.0) * 5.0;
-  Serial.print(", Volts: ");
-  Serial.print(voltage);
+  float miliVoltage = convertAnalogReadToMiliVoltage(sensorVal);
+  Serial.print(", mV: ");
+  Serial.print(miliVoltage);
   Serial.print(", degrees C: ");
-  float temperature = (voltage - .5) * 100;
+  float temperature = convertMiliVoltageToTemperature(miliVoltage);
   Serial.println(temperature);
 
   if (temperature < BASELINE_TEMP + 2)
@@ -56,5 +56,15 @@ void loop()
     digitalWrite(4, HIGH);
   }
 
-  delay(1);
+  delay(1000);
+}
+
+//How to describe the 5.0 - Volts?!
+//The maximum analogRead is 1023 (10 bit - 1)
+float convertAnalogReadToMiliVoltage(int analogRead) {
+  return analogRead * (5.0 / 1024.0) * 1000;
+}
+
+float convertMiliVoltageToTemperature(int mV) {
+  return (mV - 500.0) / 10;
 }
