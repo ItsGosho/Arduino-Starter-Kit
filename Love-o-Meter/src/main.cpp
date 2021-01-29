@@ -31,7 +31,7 @@ void loop()
   float miliVoltage = convertAnalogReadToMiliVoltage(sensorVal);
   float temperature = convertMiliVoltageToTemperature(miliVoltage);
 
-  serial_printf(Serial, "Sensor Value: %d, mV: %0f, %2f", sensorVal, miliVoltage, temperature);
+  serial_printf(Serial, "Sensor Value: %d, mV: %0f, %2f\n", sensorVal, miliVoltage, temperature);
 
   if (temperature < BASELINE_TEMP + 2)
   {
@@ -52,7 +52,7 @@ void loop()
     digitalWrite(4, HIGH);
   }
 
-  delay(10000);
+  delay(1000);
 }
 
 //How to describe the 5.0 - Volts?!
