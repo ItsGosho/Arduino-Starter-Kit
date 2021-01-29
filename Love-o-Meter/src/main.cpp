@@ -7,7 +7,6 @@ const float TEMP_SENSOR_PIN_MAX_VOLTAGE = 5.0;
 const int TEMP_SENSOR_OFFSET_VOLTAGE = 0.500;
 const int ADC_MAX_RESOLUTION = 1024;
 const int LED_PIN_NUMBERS[3] = {2, 3, 4};
-const float BASELINE_TEMP = 20.0;
 const int LOOP_DELAY_MS = 1000;
 
 void setupPins(void);
@@ -32,19 +31,19 @@ void loop()
 {
   float temperature = readTemperature(TEMP_SENSOR_PIN_NUMBER);
 
-  if (temperature < BASELINE_TEMP + 2)
+  if (temperature < 22)
   {
     digitalWrite(2, LOW);
     digitalWrite(3, LOW);
     digitalWrite(4, LOW);
   }
-  else if (temperature >= BASELINE_TEMP + 2 && temperature < BASELINE_TEMP + 4)
+  else if (temperature >= 22 && temperature < 24)
   {
     digitalWrite(2, HIGH);
     digitalWrite(3, LOW);
     digitalWrite(4, LOW);
   }
-  else if (temperature >= BASELINE_TEMP + 6)
+  else if (temperature >= 26)
   {
     digitalWrite(2, HIGH);
     digitalWrite(3, HIGH);
