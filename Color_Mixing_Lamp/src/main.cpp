@@ -10,14 +10,6 @@ const short PHOTORESISTOR_RED_PIN_NUMBER = A0;
 const short PHOTORESISTOR_GREEN_PIN_NUMBER = A1;
 const short PHOTORESISTOR_BLUE_PIN_NUMBER = A2;
 
-int redValue = 0;
-int greenValue = 0;
-int blueValue = 0;
-
-int redSensorValue = 0;
-int greenSensorValue = 0;
-int blueSensorValue = 0;
-
 void setup()
 {
   Serial.begin(9600);
@@ -29,17 +21,17 @@ void setup()
 
 void loop()
 {
-  redSensorValue = analogRead(PHOTORESISTOR_RED_PIN_NUMBER);
+  int redSensorValue = analogRead(PHOTORESISTOR_RED_PIN_NUMBER);
   delay(5);
-  greenSensorValue = analogRead(PHOTORESISTOR_GREEN_PIN_NUMBER);
+  int greenSensorValue = analogRead(PHOTORESISTOR_GREEN_PIN_NUMBER);
   delay(5);
-  blueSensorValue = analogRead(PHOTORESISTOR_BLUE_PIN_NUMBER);
+  int blueSensorValue = analogRead(PHOTORESISTOR_BLUE_PIN_NUMBER);
 
   serial_printf(Serial, "Raw Sensor Values  Red: %d Green: %d Blue: %d\n", redSensorValue, greenSensorValue, blueSensorValue);
 
-  redValue = redSensorValue / 4;
-  greenValue = greenSensorValue / 4;
-  blueValue = blueSensorValue / 4;
+  int redValue = redSensorValue / 4;
+  int greenValue = greenSensorValue / 4;
+  int blueValue = blueSensorValue / 4;
 
   serial_printf(Serial, "Mapped Sensor Values  Red: %d Green: %d Blue: %d\n", redValue, greenValue, blueValue);
 
