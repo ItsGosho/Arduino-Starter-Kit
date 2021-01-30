@@ -2,13 +2,13 @@
 #include <SerialPrintF.h>
 
 //For pin numbers we don't need anything more than 256 :D
-const int redLEDPin = 10;
-const int greenLEDPin = 9;
-const int blueLEDPin = 11;
+const short redLEDPin = 10;
+const short greenLEDPin = 9;
+const short blueLEDPin = 11;
 
-const int redSensorPin = A0;
-const int greenSensorPin = A1;
-const int blueSensorPin = A2;
+const short redSensorPin = A0;
+const short greenSensorPin = A1;
+const short blueSensorPin = A2;
 
 int redValue = 0;
 int greenValue = 0;
