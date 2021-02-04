@@ -41,11 +41,13 @@ void loop()
 
   if (hasSecondPassed())
   {
-    serial_printf(Serial, "\nPotentiometer MIN: %d MAX: %d, Servo MIN: %d MAX: %d DESIRED: %d",
+    serial_printf(Serial, "\nPotentiometer MIN: %d MAX: %d DEV: %d, Servo MIN: %d MAX: %d DEV: %d DESIRED: %d",
                   minPotValueLastSec,
                   maxPotValueLastSec,
+                  maxPotValueLastSec - minPotValueLastSec,
                   minServoAngleLastSec,
                   maxServoAngleLastSec,
+                  maxServoAngleLastSec - minServoAngleLastSec,
                   servoAngle);
 
     minPotValueLastSec = 1023;
@@ -53,8 +55,6 @@ void loop()
     minServoAngleLastSec = 179;
     maxServoAngleLastSec = 0;
   }
-
-  //serial_printf(Serial, "\nPotentiometer Value: %d, Servo Angle: %d", potentiometerValue, servoAngle);
 
   servoMotor.write(servoAngle);
   //delay(15);
