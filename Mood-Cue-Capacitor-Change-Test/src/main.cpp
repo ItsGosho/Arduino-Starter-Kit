@@ -13,7 +13,7 @@ int maxPotValueLastSec = 0;
 int minServoAngleLastSec = 179;
 int maxServoAngleLastSec = 0;
 
-bool hasSecondPassed();
+bool hasSecondsPassed(int seconds);
 
 void setup()
 {
@@ -39,7 +39,7 @@ void loop()
   if (servoAngle > maxServoAngleLastSec)
     maxServoAngleLastSec = servoAngle;
 
-  if (hasSecondPassed())
+  if (hasSecondsPassed(3))
   {
     serial_printf(Serial, "\nPotentiometer MIN: %d MAX: %d DEV: %d, Servo MIN: %d MAX: %d DEV: %d DESIRED: %d",
                   minPotValueLastSec,
@@ -62,10 +62,10 @@ void loop()
 
 int lastSecond = 0;
 
-bool hasSecondPassed()
+bool hasSecondsPassed(int seconds)
 {
   long currentMillis = millis();
-  int second = currentMillis / 1000;
+  int second = currentMillis / (seconds * 1000);
 
   if (second > lastSecond)
   {
