@@ -1,29 +1,27 @@
 #include <Arduino.h>
 #include <Servo.h>
+#include <SerialPrintF.h>
 
-Servo myServo;
+Servo servoMotor;
 
-int const potPin = A0;
-int potVal;
-int angle;
+const short POTENTIOMETER_PIN_NUMBER = A0;
+const short SERVO_MOTOR_PIN_NUMBER = 9;
+const int SERIAL_BAUD = 9600;
 
 void setup()
 {
-    myServo.attach(9);
+    Serial.begin(SERIAL_BAUD);
 
-    Serial.begin(9600);
+    servoMotor.attach(SERVO_MOTOR_PIN_NUMBER);
 }
 
 void loop()
 {
-    potVal = analogRead(potPin);
-    Serial.print("potVal: ");
-    Serial.print(potVal);
+    int potentiometerValue = analogRead(POTENTIOMETER_PIN_NUMBER);
+    int servoAngle = map(potentiometerValue, 0, 1023, 0, 179);
 
-    angle = map(potVal, 0, 1023, 0, 179);
-    Serial.print(", angle: ");
-    Serial.println(angle);
+    serial_printf(Serial, "\nPotentiometer Value: %d, Servo Angle: %d", potentiometerValue, servoAngle);
 
-    myServo.write(angle);
+    servoMotor.write(servoAngle);
     delay(15);
 }
