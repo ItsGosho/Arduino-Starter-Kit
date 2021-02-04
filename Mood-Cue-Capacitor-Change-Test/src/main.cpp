@@ -41,7 +41,7 @@ void loop()
 
   if (hasSecondsPassed(3))
   {
-    serial_printf(Serial, "\nPotentiometer MIN: %d MAX: %d DEV: %d, Servo MIN: %d MAX: %d DEV: %d DESIRED: %d",
+    serial_printf(Serial, "\nPotentiometer min: %d max: %d dev: %d  |  Servo min: %d max: %d dev: %d expected: %d",
                   minPotValue,
                   maxPotValue,
                   maxPotValue - minPotValue,
