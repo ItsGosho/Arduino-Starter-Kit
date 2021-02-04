@@ -41,7 +41,13 @@ void loop()
 
   if (hasSecondPassed())
   {
-    serial_printf(Serial, "\nPotentiometer MIN: %d MAX: %d, Servo MIN: %d MAX: %d", minPotValueLastSec, maxPotValueLastSec, minServoAngleLastSec, maxServoAngleLastSec);
+    serial_printf(Serial, "\nPotentiometer MIN: %d MAX: %d, Servo MIN: %d MAX: %d DESIRED: %d",
+                  minPotValueLastSec,
+                  maxPotValueLastSec,
+                  minServoAngleLastSec,
+                  maxServoAngleLastSec,
+                  servoAngle);
+
     minPotValueLastSec = 1023;
     maxPotValueLastSec = 0;
     minServoAngleLastSec = 179;
