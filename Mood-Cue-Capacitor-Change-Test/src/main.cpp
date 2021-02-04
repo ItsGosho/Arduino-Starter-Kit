@@ -8,10 +8,10 @@ const short POTENTIOMETER_PIN_NUMBER = A0;
 const short SERVO_MOTOR_PIN_NUMBER = 9;
 const int SERIAL_BAUD = 9600;
 
-int minPotValueLastSec = 1023;
-int maxPotValueLastSec = 0;
-int minServoAngleLastSec = 179;
-int maxServoAngleLastSec = 0;
+int minPotValue = 1023;
+int maxPotValue = 0;
+int minServoAngle = 179;
+int maxServoAngle = 0;
 
 bool hasSecondsPassed(int seconds);
 
@@ -27,33 +27,33 @@ void loop()
   int potentiometerValue = analogRead(POTENTIOMETER_PIN_NUMBER);
   int servoAngle = map(potentiometerValue, 0, 1023, 0, 179);
 
-  if (potentiometerValue < minPotValueLastSec)
-    minPotValueLastSec = potentiometerValue;
+  if (potentiometerValue < minPotValue)
+    minPotValue = potentiometerValue;
 
-  if (potentiometerValue > maxPotValueLastSec)
-    maxPotValueLastSec = potentiometerValue;
+  if (potentiometerValue > maxPotValue)
+    maxPotValue = potentiometerValue;
 
-  if (servoAngle < minServoAngleLastSec)
-    minServoAngleLastSec = servoAngle;
+  if (servoAngle < minServoAngle)
+    minServoAngle = servoAngle;
 
-  if (servoAngle > maxServoAngleLastSec)
-    maxServoAngleLastSec = servoAngle;
+  if (servoAngle > maxServoAngle)
+    maxServoAngle = servoAngle;
 
   if (hasSecondsPassed(3))
   {
     serial_printf(Serial, "\nPotentiometer MIN: %d MAX: %d DEV: %d, Servo MIN: %d MAX: %d DEV: %d DESIRED: %d",
-                  minPotValueLastSec,
-                  maxPotValueLastSec,
-                  maxPotValueLastSec - minPotValueLastSec,
-                  minServoAngleLastSec,
-                  maxServoAngleLastSec,
-                  maxServoAngleLastSec - minServoAngleLastSec,
+                  minPotValue,
+                  maxPotValue,
+                  maxPotValue - minPotValue,
+                  minServoAngle,
+                  maxServoAngle,
+                  maxServoAngle - minServoAngle,
                   servoAngle);
 
-    minPotValueLastSec = 1023;
-    maxPotValueLastSec = 0;
-    minServoAngleLastSec = 179;
-    maxServoAngleLastSec = 0;
+    minPotValue = 1023;
+    maxPotValue = 0;
+    minServoAngle = 179;
+    maxServoAngle = 0;
   }
 
   servoMotor.write(servoAngle);
