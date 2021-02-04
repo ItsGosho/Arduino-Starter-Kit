@@ -39,7 +39,7 @@ void loop()
   if (servoAngle > maxServoAngle)
     maxServoAngle = servoAngle;
 
-  if (hasSecondsPassed(3))
+  if (hasSecondsPassed(10))
   {
     serial_printf(Serial, "\nPotentiometer min: %d max: %d dev: %d  |  Servo min: %d max: %d dev: %d expected: %d",
                   minPotValue,
