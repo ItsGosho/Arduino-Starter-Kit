@@ -29,9 +29,9 @@ void setup()
 
 void loop()
 {
-  int sensorValue = analogRead(A0);
+  int phototransistorValue = analogRead(PHOTOTRANSISTOR_PIN_NUMBER);
 
-  int pitch = map(sensorValue, phototransistorLow, phototransistorHigh, 50, 4000);
+  int pitch = map(phototransistorValue, phototransistorLow, phototransistorHigh, 50, 4000);
 
   //tone(PIEZO_PIN_NUMBER, pitch, 20);
 
