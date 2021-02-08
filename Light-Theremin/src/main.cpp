@@ -1,41 +1,39 @@
 #include <Arduino.h>
 
-int sensorValue;
-int sensorLow = 1023;
-int sensorHigh = 0;
+const short LED_SYNC_FINISHED_PIN_NUMBER = 13;
+const short PIEZO_PIN_NUMBER = 8;
+const short PHOTOTRANSISTOR_PIN_NUMBER = A0;
+const int SYNC_TIME_MS = 5000;
 
-const int ledPin = 13;
+int phototransistorLow = 1023;
+int phototransistorHigh = 0;
 
 void setup()
 {
-  pinMode(ledPin, OUTPUT);
-  digitalWrite(ledPin, HIGH);
+  pinMode(LED_SYNC_FINISHED_PIN_NUMBER, OUTPUT);
+  digitalWrite(LED_SYNC_FINISHED_PIN_NUMBER, HIGH);
 
-  while (millis() < 5000)
+  while (millis() < SYNC_TIME_MS)
   {
-    sensorValue = analogRead(A0);
+    int phototransistorValue = analogRead(PHOTOTRANSISTOR_PIN_NUMBER);
 
-    if (sensorValue > sensorHigh)
-    {
-      sensorHigh = sensorValue;
-    }
+    if (phototransistorValue > phototransistorHigh)
+      phototransistorHigh = phototransistorValue;
 
-    if (sensorValue < sensorLow)
-    {
-      sensorLow = sensorValue;
-    }
+    if (phototransistorValue < phototransistorLow)
+      phototransistorLow = phototransistorValue;
   }
 
-  digitalWrite(ledPin, LOW);
+  digitalWrite(LED_SYNC_FINISHED_PIN_NUMBER, LOW);
 }
 
 void loop()
 {
-  sensorValue = analogRead(A0);
+  int sensorValue = analogRead(A0);
 
-  int pitch = map(sensorValue, sensorLow, sensorHigh, 50, 4000);
+  int pitch = map(sensorValue, phototransistorLow, phototransistorHigh, 50, 4000);
 
-  //tone(8, pitch, 20);
+  //tone(PIEZO_PIN_NUMBER, pitch, 20);
 
   delay(10);
 }
