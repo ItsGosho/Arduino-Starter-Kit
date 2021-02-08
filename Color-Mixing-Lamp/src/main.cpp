@@ -5,9 +5,9 @@ const short RGB_LED_RED_PIN_NUMBER = 9;
 const short RGB_LED_GREEN_PIN_NUMBER = 10;
 const short RGB_LED_BLUE_PIN_NUMBER = 11;
 
-const short PHOTORESISTOR_RED_PIN_NUMBER = A0;
-const short PHOTORESISTOR_GREEN_PIN_NUMBER = A1;
-const short PHOTORESISTOR_BLUE_PIN_NUMBER = A2;
+const short PHOTOTRANSISTOR_RED_PIN_NUMBER = A0;
+const short PHOTOTRANSISTOR_GREEN_PIN_NUMBER = A1;
+const short PHOTOTRANSISTOR_BLUE_PIN_NUMBER = A2;
 
 void setRGBLEDValue(int, int, int);
 
@@ -22,11 +22,11 @@ void setup()
 
 void loop()
 {
-  int redSensorValue = analogRead(PHOTORESISTOR_RED_PIN_NUMBER);
+  int redSensorValue = analogRead(PHOTOTRANSISTOR_RED_PIN_NUMBER);
   delay(5);
-  int greenSensorValue = analogRead(PHOTORESISTOR_GREEN_PIN_NUMBER);
+  int greenSensorValue = analogRead(PHOTOTRANSISTOR_GREEN_PIN_NUMBER);
   delay(5);
-  int blueSensorValue = analogRead(PHOTORESISTOR_BLUE_PIN_NUMBER);
+  int blueSensorValue = analogRead(PHOTOTRANSISTOR_BLUE_PIN_NUMBER);
 
   serial_printf(Serial, "Raw Sensor Values  Red: %d Green: %d Blue: %d\n", redSensorValue, greenSensorValue, blueSensorValue);
 
