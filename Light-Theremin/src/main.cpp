@@ -10,6 +10,7 @@ int phototransistorHigh = 0;
 
 void setup()
 {
+  Serial.begin(9600);
   pinMode(LED_SYNC_FINISHED_PIN_NUMBER, OUTPUT);
   digitalWrite(LED_SYNC_FINISHED_PIN_NUMBER, HIGH);
 
@@ -25,6 +26,8 @@ void setup()
   }
 
   digitalWrite(LED_SYNC_FINISHED_PIN_NUMBER, LOW);
+  Serial.println(phototransistorLow);
+  Serial.println(phototransistorHigh);
 }
 
 void loop()
@@ -33,7 +36,7 @@ void loop()
 
   int pitch = map(phototransistorValue, phototransistorLow, phototransistorHigh, 50, 4000);
 
-  //tone(PIEZO_PIN_NUMBER, pitch, 20);
+  tone(PIEZO_PIN_NUMBER, pitch, 20);
 
   delay(10);
 }
