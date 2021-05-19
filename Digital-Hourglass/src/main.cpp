@@ -6,7 +6,7 @@ const unsigned char LED_PIN_COUNT = 6;
 const unsigned char LED_PIN_NUMBERS[LED_PIN_COUNT] = {7, 6, 5, 4, 3, 2};
 
 void setPinsToOutput(const unsigned char pinNumbers[]);
-bool hasTimeElapsed(unsigned long value, TimeUnit TimeUnit);
+bool hasTimeElapsed(unsigned long value, TimeUnit timeUnit);
 void reset();
 void lightNext();
 
@@ -36,10 +36,10 @@ void loop()
   }
   int tiltSensor = digitalRead(TILT_SENSOR_PIN_NUMBER);
 
-  if (tiltSensor == 0)
-  {
-    reset();
-  }
+  // if (tiltSensor == 0)
+  // {
+  //   reset();
+  // }
 }
 
 void lightNext()
@@ -58,29 +58,32 @@ void reset()
   pinIndex = 0;
 }
 
-bool hasTimeElapsed(unsigned long value, TimeUnit TimeUnit)
+bool hasTimeElapsed(unsigned long value, TimeUnit timeUnit)
 {
 
-  unsigned long equationValue = value;
+  unsigned long equationValue;
 
-  if (TimeUnit == SECOND)
+  switch (timeUnit)
   {
-    equationValue = equationValue * 1000;
-  }
+  case SECOND:
+    equationValue = value * 1000;
+    break;
 
-  if (TimeUnit == MINUTE)
-  {
-    equationValue = equationValue * 60 * 1000;
-  }
+  case MINUTE:
+    equationValue = value * 60 * 1000;
+    break;
 
-  if (TimeUnit == HOUR)
-  {
-    equationValue = equationValue * 60 * 60 * 1000;
-  }
+  case HOUR:
+    equationValue = value * 60 * 60 * 1000;
+    break;
 
-  if (TimeUnit == DAY)
-  {
-    equationValue = equationValue * 24 * 60 * 60 * 1000;
+  case DAY:
+    equationValue = value * 24 * 60 * 60 * 1000;
+    break;
+
+  default:
+    equationValue = value;
+    break;
   }
 
   return (millis() % equationValue) == 0;
