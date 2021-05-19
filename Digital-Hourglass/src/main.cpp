@@ -12,12 +12,15 @@ void reset();
 void lightNext();
 
 int pinIndex = 0;
+unsigned long start = 0;
+unsigned long end = 0;
 
 void setup()
 {
   Serial.begin(9600);
   pinMode(TILT_SENSOR_PIN_NUMBER, INPUT);
   setPinsToOutput(LED_PIN_NUMBERS);
+  Serial.println(digitalRead(TILT_SENSOR_PIN_NUMBER));
 }
 
 void loop()
@@ -35,11 +38,33 @@ void loop()
       lightNext();
     }
   }
-  int tiltSensor = digitalRead(TILT_SENSOR_PIN_NUMBER);
 
-  if (tiltSensor == 0)
+  char tiltSensorValue = digitalRead(TILT_SENSOR_PIN_NUMBER);
+
+  if (tiltSensorValue == 1)
   {
-    reset();
+    if (start != 0)
+      end = millis();
+
+    unsigned long tiltSensorMsStreak = end - start;
+
+    if (tiltSensorMsStreak >= 90)
+    {
+      reset();
+      Serial.print("Lights have been reset!");
+      Serial.print(" Tilt continued ");
+      Serial.print(tiltSensorMsStreak);
+      Serial.print(" ms!");
+      Serial.println();
+    }
+
+    start = 0;
+    end = 0;
+  }
+  else
+  {
+    if (start == 0)
+      start = millis();
   }
 }
 
