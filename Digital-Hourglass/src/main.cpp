@@ -7,7 +7,7 @@ const unsigned char LED_PIN_COUNT = 6;
 const unsigned char LED_PIN_NUMBERS[LED_PIN_COUNT] = {7, 6, 5, 4, 3, 2};
 
 void setPinsToOutput(const unsigned char pinNumbers[]);
-bool hasTimeElapsed(unsigned long value, TimeUnit timeUnit);
+bool hasTimeElapsed(unsigned long value, DigitalHourglass::TimeUnit timeUnit);
 void reset();
 void lightNext();
 
@@ -24,7 +24,7 @@ void loop()
 {
   delay(1);
 
-  if (hasTimeElapsed(1, SECOND))
+  if (hasTimeElapsed(1, DigitalHourglass::TimeUnit::SECOND))
   {
     if (pinIndex > LED_PIN_COUNT - 1)
     {
@@ -59,9 +59,9 @@ void reset()
   pinIndex = 0;
 }
 
-bool hasTimeElapsed(unsigned long value, TimeUnit timeUnit)
+bool hasTimeElapsed(unsigned long value, DigitalHourglass::TimeUnit timeUnit)
 {
-  unsigned long ms = convertToMS(value, timeUnit);
+  unsigned long ms = DigitalHourglass::convertToMS(value, timeUnit);
 
   return (millis() % ms) == 0;
 }

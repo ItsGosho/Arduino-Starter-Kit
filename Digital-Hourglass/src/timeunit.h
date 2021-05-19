@@ -1,13 +1,16 @@
 #ifndef DIGITAL_HOURGLASS_TIMEUNIT
 #define DIGITAL_HOURGLASS_TIMEUNIT
 
-enum TimeUnit
+namespace DigitalHourglass
 {
-    MILISECOND,
-    SECOND,
-    MINUTE,
-    HOUR,
-    DAY,
-};
+    enum TimeUnit
+    {
+        MILISECOND,
+        SECOND,
+        MINUTE,
+        HOUR,
+        DAY,
+    };
+}
 
 #endif //DIGITAL_HOURGLASS_TIMEUNIT
