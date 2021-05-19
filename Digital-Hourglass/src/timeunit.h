@@ -3,5 +3,7 @@ enum TimeUnit
 {
     MILISECOND,
     SECOND,
-    MINUTE
+    MINUTE,
+    HOUR,
+    DAY,
 };

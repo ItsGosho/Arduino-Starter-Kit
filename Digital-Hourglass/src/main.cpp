@@ -73,12 +73,21 @@ bool hasTimeElapsed(unsigned long value, TimeUnit TimeUnit)
     equationValue = equationValue * 60 * 1000;
   }
 
+  if (TimeUnit == HOUR)
+  {
+    equationValue = equationValue * 60 * 60 * 1000;
+  }
+
+  if (TimeUnit == DAY)
+  {
+    equationValue = equationValue * 24 * 60 * 60 * 1000;
+  }
+
   return (millis() % equationValue) == 0;
 }
 
 void setPinsToOutput(const unsigned char pinNumbers[])
 {
-
   for (size_t i = 0; i < LED_PIN_COUNT; i++)
   {
     pinMode(pinNumbers[i], OUTPUT);
