@@ -1,5 +1,5 @@
-#ifndef KUR1
-#define KUR1
+#ifndef DIGITAL_HOURGLASS_MSCONVERTER
+#define DIGITAL_HOURGLASS_MSCONVERTER
 
 #include "timeunit.h"
 
@@ -24,4 +24,4 @@ unsigned long convertToMS(unsigned long ms, TimeUnit timeUnit)
     }
 }
 
-#endif //KUR1
+#endif //DIGITAL_HOURGLASS_MSCONVERTER

@@ -37,10 +37,10 @@ void loop()
   }
   int tiltSensor = digitalRead(TILT_SENSOR_PIN_NUMBER);
 
-  // if (tiltSensor == 0)
-  // {
-  //   reset();
-  // }
+  if (tiltSensor == 0)
+  {
+    reset();
+  }
 }
 
 void lightNext()

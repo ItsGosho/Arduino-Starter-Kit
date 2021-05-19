@@ -1,5 +1,5 @@
-#ifndef KUR2
-#define KUR2
+#ifndef DIGITAL_HOURGLASS_TIMEUNIT
+#define DIGITAL_HOURGLASS_TIMEUNIT
 
 enum TimeUnit
 {
@@ -10,4 +10,4 @@ enum TimeUnit
     DAY,
 };
 
-#endif //KUR2
+#endif //DIGITAL_HOURGLASS_TIMEUNIT
