@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include "timeunit.h"
+#include "msconverter.h"
 
 const unsigned char TILT_SENSOR_PIN_NUMBER = 8;
 const unsigned char LED_PIN_COUNT = 6;
@@ -60,33 +61,9 @@ void reset()
 
 bool hasTimeElapsed(unsigned long value, TimeUnit timeUnit)
 {
+  unsigned long ms = convertToMS(value, timeUnit);
 
-  unsigned long equationValue;
-
-  switch (timeUnit)
-  {
-  case SECOND:
-    equationValue = value * 1000;
-    break;
-
-  case MINUTE:
-    equationValue = value * 60 * 1000;
-    break;
-
-  case HOUR:
-    equationValue = value * 60 * 60 * 1000;
-    break;
-
-  case DAY:
-    equationValue = value * 24 * 60 * 60 * 1000;
-    break;
-
-  default:
-    equationValue = value;
-    break;
-  }
-
-  return (millis() % equationValue) == 0;
+  return (millis() % ms) == 0;
 }
 
 void setPinsToOutput(const unsigned char pinNumbers[])

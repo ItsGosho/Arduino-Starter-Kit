@@ -1,3 +1,5 @@
+#ifndef KUR2
+#define KUR2
 
 enum TimeUnit
 {
@@ -7,3 +9,5 @@ enum TimeUnit
     HOUR,
     DAY,
 };
+
+#endif //KUR2
