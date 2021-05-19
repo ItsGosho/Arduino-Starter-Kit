@@ -7,6 +7,8 @@ const unsigned char LED_PIN_NUMBERS[LED_PIN_COUNT] = {7, 6, 5, 4, 3, 2};
 
 void setPinsToOutput(const unsigned char pinNumbers[]);
 bool hasTimeElapsed(unsigned long value, TimeUnit TimeUnit);
+void reset();
+void lightNext();
 
 int pinIndex = 0;
 
@@ -25,30 +27,35 @@ void loop()
   {
     if (pinIndex > LED_PIN_COUNT - 1)
     {
-      for (size_t i = 0; i < LED_PIN_COUNT; i++)
-      {
-        digitalWrite(LED_PIN_NUMBERS[i], LOW);
-      }
-
-      pinIndex = 0;
+      reset();
     }
     else
     {
-      digitalWrite(LED_PIN_NUMBERS[pinIndex], HIGH);
-      pinIndex = pinIndex + 1;
+      lightNext();
     }
   }
   int tiltSensor = digitalRead(TILT_SENSOR_PIN_NUMBER);
 
   if (tiltSensor == 0)
   {
-    for (size_t i = 0; i < LED_PIN_COUNT; i++)
-    {
-      digitalWrite(LED_PIN_NUMBERS[i], LOW);
-    }
-
-    pinIndex = 0;
+    reset();
   }
+}
+
+void lightNext()
+{
+  digitalWrite(LED_PIN_NUMBERS[pinIndex], HIGH);
+  pinIndex = pinIndex + 1;
+}
+
+void reset()
+{
+  for (size_t i = 0; i < LED_PIN_COUNT; i++)
+  {
+    digitalWrite(LED_PIN_NUMBERS[i], LOW);
+  }
+
+  pinIndex = 0;
 }
 
 bool hasTimeElapsed(unsigned long value, TimeUnit TimeUnit)
