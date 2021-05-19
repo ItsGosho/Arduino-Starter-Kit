@@ -14,13 +14,14 @@ void lightNext();
 int pinIndex = 0;
 unsigned long start = 0;
 unsigned long end = 0;
+short tiltStartPosition;
 
 void setup()
 {
   Serial.begin(9600);
   pinMode(TILT_SENSOR_PIN_NUMBER, INPUT);
   setPinsToOutput(LED_PIN_NUMBERS);
-  Serial.println(digitalRead(TILT_SENSOR_PIN_NUMBER));
+  tiltStartPosition = digitalRead(TILT_SENSOR_PIN_NUMBER);
 }
 
 void loop()
@@ -41,7 +42,7 @@ void loop()
 
   char tiltSensorValue = digitalRead(TILT_SENSOR_PIN_NUMBER);
 
-  if (tiltSensorValue == 1)
+  if (tiltSensorValue == tiltStartPosition)
   {
     if (start != 0)
       end = millis();
