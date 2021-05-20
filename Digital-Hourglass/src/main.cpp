@@ -45,7 +45,7 @@ void loop()
 void lightNext()
 {
   digitalWrite(LED_PIN_NUMBERS[reachedLedIndex], HIGH);
-  reachedLedIndex = reachedLedIndex + 1;
+  reachedLedIndex++;
 }
 
 void reset()
