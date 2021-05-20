@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "timeunit.h"
 #include "msconverter.h"
+#include "SerialPrintF.h"
 
 const unsigned char TILT_SENSOR_PIN_NUMBER = 8;
 const unsigned char LED_PIN_COUNT = 6;
@@ -24,6 +25,12 @@ void setup()
   tiltStartPosition = digitalRead(TILT_SENSOR_PIN_NUMBER);
 }
 
+/**
+ * 
+ * 1. Use the library for logging, which was used in the older task solutions.
+ * 2. Move somehow the logic of the titlt sensor, which will be under the SensitiveTiltSensor, which will accept sensitivity ()
+ * 3. Look again the whole code, methods, variables and so on.
+**/
 void loop()
 {
   delay(1);
@@ -52,11 +59,7 @@ void loop()
     if (tiltSensorMsStreak >= 90)
     {
       reset();
-      Serial.print("Lights have been reset!");
-      Serial.print(" Tilt continued ");
-      Serial.print(tiltSensorMsStreak);
-      Serial.print(" ms!");
-      Serial.println();
+      serial_printf(Serial, "Lights have been reset! Tilt continued %d ms!\n", tiltSensorMsStreak);
     }
 
     start = 0;
