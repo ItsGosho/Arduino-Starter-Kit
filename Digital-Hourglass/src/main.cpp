@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include "timeunit.h"
-#include "msconverter.h"
 #include "SerialPrintF.h"
 #include "sensitivetiltsensor.h"
 #include "utils.h"
@@ -10,7 +9,6 @@ const unsigned char TILT_SENSOR_SENSITIVITY_MS = 135;
 const unsigned char LED_PIN_COUNT = 6;
 const unsigned char LED_PIN_NUMBERS[LED_PIN_COUNT] = {7, 6, 5, 4, 3, 2};
 
-bool hasTimeElapsed(const unsigned long &value, const DigitalHourglass::TimeUnit &timeUnit);
 void resetLeds();
 void lightNextLed();
 
@@ -27,7 +25,7 @@ void loop()
 {
   delay(1);
 
-  if (hasTimeElapsed(1, DigitalHourglass::TimeUnit::SECOND))
+  if (DigitalHourglass::hasTimeElapsed(1, DigitalHourglass::TimeUnit::SECOND))
   {
     if (reachedLedIndex > LED_PIN_COUNT - 1)
     {
@@ -56,11 +54,4 @@ void resetLeds()
   }
 
   reachedLedIndex = 0;
-}
-
-bool hasTimeElapsed(const unsigned long &value, const DigitalHourglass::TimeUnit &timeUnit)
-{
-  unsigned long ms = DigitalHourglass::convertToMS(value, timeUnit);
-
-  return (millis() % ms) == 0;
 }
