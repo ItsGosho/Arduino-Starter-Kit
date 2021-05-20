@@ -5,6 +5,7 @@
 #include "sensitivetiltsensor.h"
 
 const unsigned char TILT_SENSOR_PIN_NUMBER = 8;
+const unsigned char TILT_SENSOR_SENSITIVITY_MS = 135;
 const unsigned char LED_PIN_COUNT = 6;
 const unsigned char LED_PIN_NUMBERS[LED_PIN_COUNT] = {7, 6, 5, 4, 3, 2};
 
@@ -17,7 +18,7 @@ int pinIndex = 0;
 unsigned long start = 0;
 unsigned long end = 0;
 short tiltStartPosition;
-DigitalHourglass::TiltSensor tiltSensor = DigitalHourglass::TiltSensor(TILT_SENSOR_PIN_NUMBER, 135);
+DigitalHourglass::TiltSensor tiltSensor = DigitalHourglass::TiltSensor(TILT_SENSOR_PIN_NUMBER, TILT_SENSOR_SENSITIVITY_MS);
 
 void onTiltSensorFlip()
 {
