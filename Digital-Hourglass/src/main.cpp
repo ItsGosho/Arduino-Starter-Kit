@@ -14,10 +14,7 @@ bool hasTimeElapsed(const unsigned long &value, const DigitalHourglass::TimeUnit
 void reset();
 void lightNext();
 
-int pinIndex = 0;
-unsigned long start = 0;
-unsigned long end = 0;
-short tiltStartPosition;
+int reachedLedIndex = 0;
 DigitalHourglass::TiltSensor tiltSensor = DigitalHourglass::TiltSensor(TILT_SENSOR_PIN_NUMBER, TILT_SENSOR_SENSITIVITY_MS);
 
 void onTiltSensorFlip()
@@ -44,7 +41,7 @@ void loop()
 
   if (hasTimeElapsed(1, DigitalHourglass::TimeUnit::SECOND))
   {
-    if (pinIndex > LED_PIN_COUNT - 1)
+    if (reachedLedIndex > LED_PIN_COUNT - 1)
     {
       reset();
     }
@@ -59,8 +56,8 @@ void loop()
 
 void lightNext()
 {
-  digitalWrite(LED_PIN_NUMBERS[pinIndex], HIGH);
-  pinIndex = pinIndex + 1;
+  digitalWrite(LED_PIN_NUMBERS[reachedLedIndex], HIGH);
+  reachedLedIndex = reachedLedIndex + 1;
 }
 
 void reset()
@@ -70,7 +67,7 @@ void reset()
     digitalWrite(LED_PIN_NUMBERS[i], LOW);
   }
 
-  pinIndex = 0;
+  reachedLedIndex = 0;
 }
 
 bool hasTimeElapsed(const unsigned long &value, const DigitalHourglass::TimeUnit &timeUnit)
