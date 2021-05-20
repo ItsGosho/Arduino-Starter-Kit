@@ -17,24 +17,12 @@ void lightNext();
 int reachedLedIndex = 0;
 DigitalHourglass::TiltSensor tiltSensor = DigitalHourglass::TiltSensor(TILT_SENSOR_PIN_NUMBER, TILT_SENSOR_SENSITIVITY_MS);
 
-void onTiltSensorFlip()
-{
-  //  Serial.println("FLIP!");
-  reset();
-}
-
 void setup()
 {
   Serial.begin(9600);
   setPinsToOutput(LED_PIN_NUMBERS);
 }
 
-/**
- * 
- * 1. Use the library for logging, which was used in the older task solutions.
- * 2. Move somehow the logic of the titlt sensor, which will be under the SensitiveTiltSensor, which will accept sensitivity ()
- * 3. Look again the whole code, methods, variables and so on.
-**/
 void loop()
 {
   delay(1);
@@ -51,7 +39,7 @@ void loop()
     }
   }
 
-  tiltSensor.checkFlip(onTiltSensorFlip);
+  tiltSensor.checkFlip(reset);
 }
 
 void lightNext()
