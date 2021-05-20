@@ -11,6 +11,7 @@ const unsigned char LED_PIN_NUMBERS[LED_PIN_COUNT] = {7, 6, 5, 4, 3, 2};
 
 void resetLeds();
 void lightNextLed();
+bool hasNoMoreLeds();
 
 int reachedLedIndex = 0;
 DigitalHourglass::TiltSensor tiltSensor = DigitalHourglass::TiltSensor(TILT_SENSOR_PIN_NUMBER, TILT_SENSOR_SENSITIVITY_MS);
@@ -27,17 +28,19 @@ void loop()
 
   if (DigitalHourglass::hasTimeElapsed(1, DigitalHourglass::TimeUnit::SECOND))
   {
-    if (reachedLedIndex > LED_PIN_COUNT - 1)
-    {
+
+    if (hasNoMoreLeds())
       resetLeds();
-    }
     else
-    {
       lightNextLed();
-    }
   }
 
   tiltSensor.checkFlip(resetLeds);
+}
+
+bool hasNoMoreLeds()
+{
+  return reachedLedIndex > LED_PIN_COUNT - 1;
 }
 
 void lightNextLed()
@@ -48,10 +51,7 @@ void lightNextLed()
 
 void resetLeds()
 {
-  for (size_t i = 0; i < LED_PIN_COUNT; i++)
-  {
-    digitalWrite(LED_PIN_NUMBERS[i], LOW);
-  }
+  DigitalHourglass::digitalWrites(LED_PIN_NUMBERS, LED_PIN_COUNT, LOW);
 
   reachedLedIndex = 0;
 }

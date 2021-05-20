@@ -11,6 +11,14 @@ void DigitalHourglass::pinsMode(const unsigned char pinNumbers[], const unsigned
     }
 }
 
+void DigitalHourglass::digitalWrites(const unsigned char pinNumbers[], const unsigned char &pinNumbersSize, const char &val)
+{
+    for (size_t i = 0; i < pinNumbersSize; i++)
+    {
+        digitalWrite(pinNumbers[i], val);
+    }
+}
+
 bool DigitalHourglass::hasTimeElapsed(const unsigned long &value, const DigitalHourglass::TimeUnit &timeUnit)
 {
   unsigned long ms = DigitalHourglass::convertToMS(value, timeUnit);
