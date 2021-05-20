@@ -2,6 +2,7 @@
 #include "timeunit.h"
 #include "msconverter.h"
 #include "SerialPrintF.h"
+#include "sensitivetiltsensor.h"
 
 const unsigned char TILT_SENSOR_PIN_NUMBER = 8;
 const unsigned char LED_PIN_COUNT = 6;
@@ -16,13 +17,18 @@ int pinIndex = 0;
 unsigned long start = 0;
 unsigned long end = 0;
 short tiltStartPosition;
+DigitalHourglass::TiltSensor tiltSensor = DigitalHourglass::TiltSensor(TILT_SENSOR_PIN_NUMBER, 135);
+
+void onTiltSensorFlip()
+{
+//  Serial.println("FLIP!");
+  reset();
+}
 
 void setup()
 {
   Serial.begin(9600);
-  pinMode(TILT_SENSOR_PIN_NUMBER, INPUT);
   setPinsToOutput(LED_PIN_NUMBERS);
-  tiltStartPosition = digitalRead(TILT_SENSOR_PIN_NUMBER);
 }
 
 /**
@@ -47,29 +53,7 @@ void loop()
     }
   }
 
-  char tiltSensorValue = digitalRead(TILT_SENSOR_PIN_NUMBER);
-
-  if (tiltSensorValue == tiltStartPosition)
-  {
-    if (start != 0)
-      end = millis();
-
-    unsigned long tiltSensorMsStreak = end - start;
-
-    if (tiltSensorMsStreak >= 90)
-    {
-      reset();
-      serial_printf(Serial, "Lights have been reset! Tilt continued %d ms!\n", tiltSensorMsStreak);
-    }
-
-    start = 0;
-    end = 0;
-  }
-  else
-  {
-    if (start == 0)
-      start = millis();
-  }
+  tiltSensor.checkFlip(onTiltSensorFlip);
 }
 
 void lightNext()
