@@ -10,7 +10,7 @@ const unsigned char LED_PIN_COUNT = 6;
 const unsigned char LED_PIN_NUMBERS[LED_PIN_COUNT] = {7, 6, 5, 4, 3, 2};
 
 void setPinsToOutput(const unsigned char pinNumbers[]);
-bool hasTimeElapsed(unsigned long value, DigitalHourglass::TimeUnit timeUnit);
+bool hasTimeElapsed(const unsigned long &value, const DigitalHourglass::TimeUnit &timeUnit);
 void reset();
 void lightNext();
 
@@ -22,7 +22,7 @@ DigitalHourglass::TiltSensor tiltSensor = DigitalHourglass::TiltSensor(TILT_SENS
 
 void onTiltSensorFlip()
 {
-//  Serial.println("FLIP!");
+  //  Serial.println("FLIP!");
   reset();
 }
 
@@ -73,7 +73,7 @@ void reset()
   pinIndex = 0;
 }
 
-bool hasTimeElapsed(unsigned long value, DigitalHourglass::TimeUnit timeUnit)
+bool hasTimeElapsed(const unsigned long &value, const DigitalHourglass::TimeUnit &timeUnit)
 {
   unsigned long ms = DigitalHourglass::convertToMS(value, timeUnit);
 
