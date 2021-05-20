@@ -3,16 +3,16 @@
 #include "msconverter.h"
 #include "SerialPrintF.h"
 #include "sensitivetiltsensor.h"
+#include "utils.h"
 
 const unsigned char TILT_SENSOR_PIN_NUMBER = 8;
 const unsigned char TILT_SENSOR_SENSITIVITY_MS = 135;
 const unsigned char LED_PIN_COUNT = 6;
 const unsigned char LED_PIN_NUMBERS[LED_PIN_COUNT] = {7, 6, 5, 4, 3, 2};
 
-void setPinsToOutput(const unsigned char pinNumbers[]);
 bool hasTimeElapsed(const unsigned long &value, const DigitalHourglass::TimeUnit &timeUnit);
-void reset();
-void lightNext();
+void resetLeds();
+void lightNextLed();
 
 int reachedLedIndex = 0;
 DigitalHourglass::TiltSensor tiltSensor = DigitalHourglass::TiltSensor(TILT_SENSOR_PIN_NUMBER, TILT_SENSOR_SENSITIVITY_MS);
@@ -20,7 +20,7 @@ DigitalHourglass::TiltSensor tiltSensor = DigitalHourglass::TiltSensor(TILT_SENS
 void setup()
 {
   Serial.begin(9600);
-  setPinsToOutput(LED_PIN_NUMBERS);
+  DigitalHourglass::pinsMode(LED_PIN_NUMBERS, LED_PIN_COUNT, OUTPUT);
 }
 
 void loop()
@@ -31,24 +31,24 @@ void loop()
   {
     if (reachedLedIndex > LED_PIN_COUNT - 1)
     {
-      reset();
+      resetLeds();
     }
     else
     {
-      lightNext();
+      lightNextLed();
     }
   }
 
-  tiltSensor.checkFlip(reset);
+  tiltSensor.checkFlip(resetLeds);
 }
 
-void lightNext()
+void lightNextLed()
 {
   digitalWrite(LED_PIN_NUMBERS[reachedLedIndex], HIGH);
   reachedLedIndex++;
 }
 
-void reset()
+void resetLeds()
 {
   for (size_t i = 0; i < LED_PIN_COUNT; i++)
   {
@@ -63,12 +63,4 @@ bool hasTimeElapsed(const unsigned long &value, const DigitalHourglass::TimeUnit
   unsigned long ms = DigitalHourglass::convertToMS(value, timeUnit);
 
   return (millis() % ms) == 0;
-}
-
-void setPinsToOutput(const unsigned char pinNumbers[])
-{
-  for (size_t i = 0; i < LED_PIN_COUNT; i++)
-  {
-    pinMode(pinNumbers[i], OUTPUT);
-  }
 }
