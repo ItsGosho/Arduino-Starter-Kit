@@ -78,7 +78,7 @@ void loop() {
     if (isBoxLocked) {
         int piezoValue = analogRead(piezo);
 
-        if (numberOfKnocks < 3 && piezoValue > 0) {
+        if (numberOfKnocks < 3) {
 
             if (isKnockValueValid(piezoValue)) {
                 numberOfKnocks++;
