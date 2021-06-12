@@ -15,10 +15,10 @@ int switchVal;
 const int quiteKnock = 10;
 const int loudKnock = 100;
 
-boolean isBoxLocked = false;
+bool isBoxLocked = false;
 int numberOfKnocks = 0;
 
-boolean checkForKnock(int value) {
+bool checkForKnock(int value) {
 
     if (value > quiteKnock && value < loudKnock) {
         digitalWrite(yellowLed, HIGH);
@@ -71,14 +71,14 @@ void setup() {
 
 void loop() {
 
-    if (isBoxLocked == false) {
+    if (!isBoxLocked) {
         switchVal = digitalRead(switchPin);
 
         if (switchVal == HIGH)
             lockBox();
     }
 
-    if (isBoxLocked == true) {
+    if (isBoxLocked) {
         knockVal = analogRead(piezo);
 
         if (numberOfKnocks < 3 && knockVal > 0) {
