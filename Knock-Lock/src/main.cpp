@@ -51,6 +51,10 @@ void unlockBox() {
     numberOfKnocks = 0;
 }
 
+bool isKnocksEnough() {
+    return numberOfKnocks >= UNLOCK_KNOCKS_REQUIRED;
+}
+
 void setup() {
     myServo.attach(9);
     pinMode(YELLOW_LED_PIN, OUTPUT);
@@ -77,12 +81,10 @@ void loop() {
     if (isBoxLocked) {
         int piezoValue = analogRead(PIEZO_PIN);
 
-        if (numberOfKnocks < UNLOCK_KNOCKS_REQUIRED && isKnockValueValid(piezoValue)) {
+        if (!isKnocksEnough() && isKnockValueValid(piezoValue))
             numberOfKnocks++;
-        }
 
-        if (numberOfKnocks >= UNLOCK_KNOCKS_REQUIRED) {
+        if (isKnocksEnough())
             unlockBox();
-        }
     }
 }
