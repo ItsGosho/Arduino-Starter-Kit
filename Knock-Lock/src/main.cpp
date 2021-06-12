@@ -15,7 +15,7 @@ const int loudKnock = 100;
 bool isBoxLocked = false;
 int numberOfKnocks = 0;
 
-bool checkForKnock(int value) {
+bool isKnockValueValid(int value) {
 
     if (value > quiteKnock && value < loudKnock) {
         digitalWrite(yellowLed, HIGH);
@@ -80,7 +80,7 @@ void loop() {
 
         if (numberOfKnocks < 3 && piezoValue > 0) {
 
-            if (checkForKnock(piezoValue) == true) {
+            if (isKnockValueValid(piezoValue)) {
                 numberOfKnocks++;
             }
 
