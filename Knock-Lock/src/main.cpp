@@ -15,7 +15,7 @@ int switchVal;
 const int quiteKnock = 10;
 const int loudKnock = 100;
 
-boolean locked = false;
+boolean isLocked = false;
 int numberOfKnocks = 0;
 
 boolean checkForKnock(int value) {
@@ -52,11 +52,11 @@ void setup() {
 
 void loop() {
 
-    if (locked == false) {
+    if (isLocked == false) {
         switchVal = digitalRead(switchPin);
 
         if (switchVal == HIGH) {
-            locked = true;
+            isLocked = true;
             digitalWrite(greenLed, LOW);
             digitalWrite(redLed, HIGH);
             myServo.write(90);
@@ -65,7 +65,7 @@ void loop() {
         }
     }
 
-    if (locked == true) {
+    if (isLocked == true) {
         knockVal = analogRead(piezo);
 
         if (numberOfKnocks < 3 && knockVal > 0) {
@@ -79,7 +79,7 @@ void loop() {
         }
 
         if (numberOfKnocks >= 3) {
-            locked = false;
+            isLocked = false;
             myServo.write(0);
             delay(20);
             digitalWrite(greenLed, HIGH);
