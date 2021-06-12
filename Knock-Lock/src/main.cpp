@@ -3,24 +3,22 @@
 
 Servo myServo;
 
-const int piezo = A0;
-const int switchPin = 8;
-const int yellowLed = 12;
-const int greenLed = 11;
-const int redLed = 10;
-
-const int quiteKnock = 10;
-const int loudKnock = 100;
+const int PIEZO_PIN = A0;
+const int UNLOCK_BUTTON_PIN = 8;
+const int YELLOW_LED_PIN = 12;
+const int GREEN_LED_PIN = 11;
+const int RED_LED_PIN = 10;
+const int KNOCK_THRESHOLD_VALUE = 10;
 
 bool isBoxLocked = false;
 int numberOfKnocks = 0;
 
 bool isKnockValueValid(int value) {
 
-    if (value > quiteKnock && value < loudKnock) {
-        digitalWrite(yellowLed, HIGH);
+    if (value > KNOCK_THRESHOLD_VALUE) {
+        digitalWrite(YELLOW_LED_PIN, HIGH);
         delay(50);
-        digitalWrite(yellowLed, LOW);
+        digitalWrite(YELLOW_LED_PIN, LOW);
         Serial.print("Valid knock of value ");
         Serial.println(value);
 
@@ -35,8 +33,8 @@ bool isKnockValueValid(int value) {
 
 void lockBox() {
     isBoxLocked = true;
-    digitalWrite(greenLed, LOW);
-    digitalWrite(redLed, HIGH);
+    digitalWrite(GREEN_LED_PIN, LOW);
+    digitalWrite(RED_LED_PIN, HIGH);
     myServo.write(90);
     Serial.println("The box is locked!");
     delay(1000);
@@ -46,22 +44,22 @@ void unlockBox() {
     isBoxLocked = false;
     myServo.write(0);
     delay(20);
-    digitalWrite(greenLed, HIGH);
-    digitalWrite(redLed, LOW);
+    digitalWrite(GREEN_LED_PIN, HIGH);
+    digitalWrite(RED_LED_PIN, LOW);
     Serial.println("The box is unlocked!");
     numberOfKnocks = 0;
 }
 
 void setup() {
     myServo.attach(9);
-    pinMode(yellowLed, OUTPUT);
-    pinMode(redLed, OUTPUT);
-    pinMode(greenLed, OUTPUT);
-    pinMode(switchPin, INPUT);
+    pinMode(YELLOW_LED_PIN, OUTPUT);
+    pinMode(RED_LED_PIN, OUTPUT);
+    pinMode(GREEN_LED_PIN, OUTPUT);
+    pinMode(UNLOCK_BUTTON_PIN, INPUT);
 
     Serial.begin(9600);
 
-    digitalWrite(greenLed, HIGH);
+    digitalWrite(GREEN_LED_PIN, HIGH);
     myServo.write(0);
     Serial.println("The box is unlocked!");
 }
@@ -69,14 +67,14 @@ void setup() {
 void loop() {
 
     if (!isBoxLocked) {
-        int switchValue = digitalRead(switchPin);
+        int switchValue = digitalRead(UNLOCK_BUTTON_PIN);
 
         if (switchValue == HIGH)
             lockBox();
     }
 
     if (isBoxLocked) {
-        int piezoValue = analogRead(piezo);
+        int piezoValue = analogRead(PIEZO_PIN);
 
         if (numberOfKnocks < 3) {
 
