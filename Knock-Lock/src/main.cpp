@@ -9,6 +9,7 @@ const short YELLOW_LED_PIN = 12;
 const short GREEN_LED_PIN = 11;
 const short RED_LED_PIN = 10;
 const int KNOCK_THRESHOLD_VALUE = 10;
+const int UNLOCK_KNOCKS_REQUIRED = 3;
 
 bool isBoxLocked = false;
 int numberOfKnocks = 0;
@@ -76,17 +77,11 @@ void loop() {
     if (isBoxLocked) {
         int piezoValue = analogRead(PIEZO_PIN);
 
-        if (numberOfKnocks < 3) {
-
-            if (isKnockValueValid(piezoValue)) {
-                numberOfKnocks++;
-            }
-
-            Serial.print(3 - numberOfKnocks);
-            Serial.println(" more knocks to go!");
+        if (numberOfKnocks < UNLOCK_KNOCKS_REQUIRED && isKnockValueValid(piezoValue)) {
+            numberOfKnocks++;
         }
 
-        if (numberOfKnocks >= 3) {
+        if (numberOfKnocks >= UNLOCK_KNOCKS_REQUIRED) {
             unlockBox();
         }
     }
