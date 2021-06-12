@@ -55,12 +55,18 @@ bool isKnocksEnough() {
     return numberOfKnocks >= UNLOCK_KNOCKS_REQUIRED;
 }
 
+template<int S>
+void setPinsMode(const short (& pins)[S], bool mode) {
+
+    for (int i = 0; i < S; ++i)
+        pinMode(pins[i], OUTPUT);
+}
+
 void setup() {
     myServo.attach(9);
-    pinMode(YELLOW_LED_PIN, OUTPUT);
-    pinMode(RED_LED_PIN, OUTPUT);
-    pinMode(GREEN_LED_PIN, OUTPUT);
-    pinMode(LOCK_BUTTON_PIN, INPUT);
+
+    const short outputPins[5] = {YELLOW_LED_PIN, RED_LED_PIN, GREEN_LED_PIN, LOCK_BUTTON_PIN};
+    setPinsMode<5>(outputPins, OUTPUT);
 
     Serial.begin(9600);
 
