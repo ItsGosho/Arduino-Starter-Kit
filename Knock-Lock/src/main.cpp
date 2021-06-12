@@ -45,6 +45,16 @@ void lockBox() {
     delay(1000);
 }
 
+void unlockBox() {
+    isBoxLocked = false;
+    myServo.write(0);
+    delay(20);
+    digitalWrite(greenLed, HIGH);
+    digitalWrite(redLed, LOW);
+    Serial.println("The box is unlocked!");
+    numberOfKnocks = 0;
+}
+
 void setup() {
     myServo.attach(9);
     pinMode(yellowLed, OUTPUT);
@@ -82,13 +92,7 @@ void loop() {
         }
 
         if (numberOfKnocks >= 3) {
-            isBoxLocked = false;
-            myServo.write(0);
-            delay(20);
-            digitalWrite(greenLed, HIGH);
-            digitalWrite(redLed, LOW);
-            Serial.println("The box is unlocked!");
-            numberOfKnocks = 0;
+            unlockBox();
         }
     }
 }
