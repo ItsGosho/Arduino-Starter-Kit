@@ -15,7 +15,7 @@ int switchVal;
 const int quiteKnock = 10;
 const int loudKnock = 100;
 
-boolean isLocked = false;
+boolean isBoxLocked = false;
 int numberOfKnocks = 0;
 
 boolean checkForKnock(int value) {
@@ -36,6 +36,15 @@ boolean checkForKnock(int value) {
     }
 }
 
+void lockBox() {
+    isBoxLocked = true;
+    digitalWrite(greenLed, LOW);
+    digitalWrite(redLed, HIGH);
+    myServo.write(90);
+    Serial.println("The box is locked!");
+    delay(1000);
+}
+
 void setup() {
     myServo.attach(9);
     pinMode(yellowLed, OUTPUT);
@@ -52,20 +61,14 @@ void setup() {
 
 void loop() {
 
-    if (isLocked == false) {
+    if (isBoxLocked == false) {
         switchVal = digitalRead(switchPin);
 
-        if (switchVal == HIGH) {
-            isLocked = true;
-            digitalWrite(greenLed, LOW);
-            digitalWrite(redLed, HIGH);
-            myServo.write(90);
-            Serial.println("The box is locked!");
-            delay(1000);
-        }
+        if (switchVal == HIGH)
+            lockBox();
     }
 
-    if (isLocked == true) {
+    if (isBoxLocked == true) {
         knockVal = analogRead(piezo);
 
         if (numberOfKnocks < 3 && knockVal > 0) {
@@ -79,7 +82,7 @@ void loop() {
         }
 
         if (numberOfKnocks >= 3) {
-            isLocked = false;
+            isBoxLocked = false;
             myServo.write(0);
             delay(20);
             digitalWrite(greenLed, HIGH);
