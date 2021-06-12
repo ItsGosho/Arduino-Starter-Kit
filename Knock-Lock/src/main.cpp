@@ -3,11 +3,11 @@
 
 Servo myServo;
 
-const int PIEZO_PIN = A0;
-const int LOCK_BUTTON_PIN = 8;
-const int YELLOW_LED_PIN = 12;
-const int GREEN_LED_PIN = 11;
-const int RED_LED_PIN = 10;
+const short PIEZO_PIN = A0;
+const short LOCK_BUTTON_PIN = 8;
+const short YELLOW_LED_PIN = 12;
+const short GREEN_LED_PIN = 11;
+const short RED_LED_PIN = 10;
 const int KNOCK_THRESHOLD_VALUE = 10;
 
 bool isBoxLocked = false;
@@ -67,7 +67,7 @@ void setup() {
 void loop() {
 
     if (!isBoxLocked) {
-        int isLockedButtonPressed = digitalRead(LOCK_BUTTON_PIN) == HIGH;
+        bool isLockedButtonPressed = digitalRead(LOCK_BUTTON_PIN) == HIGH;
 
         if (isLockedButtonPressed)
             lockBox();
