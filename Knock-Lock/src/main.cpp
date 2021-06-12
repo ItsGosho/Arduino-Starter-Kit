@@ -9,9 +9,6 @@ const int yellowLed = 12;
 const int greenLed = 11;
 const int redLed = 10;
 
-int knockVal;
-int switchVal;
-
 const int quiteKnock = 10;
 const int loudKnock = 100;
 
@@ -72,18 +69,18 @@ void setup() {
 void loop() {
 
     if (!isBoxLocked) {
-        switchVal = digitalRead(switchPin);
+        int switchValue = digitalRead(switchPin);
 
-        if (switchVal == HIGH)
+        if (switchValue == HIGH)
             lockBox();
     }
 
     if (isBoxLocked) {
-        knockVal = analogRead(piezo);
+        int piezoValue = analogRead(piezo);
 
-        if (numberOfKnocks < 3 && knockVal > 0) {
+        if (numberOfKnocks < 3 && piezoValue > 0) {
 
-            if (checkForKnock(knockVal) == true) {
+            if (checkForKnock(piezoValue) == true) {
                 numberOfKnocks++;
             }
 
