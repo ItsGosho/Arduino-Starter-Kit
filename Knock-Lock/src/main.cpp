@@ -4,7 +4,7 @@
 Servo myServo;
 
 const int PIEZO_PIN = A0;
-const int UNLOCK_BUTTON_PIN = 8;
+const int LOCK_BUTTON_PIN = 8;
 const int YELLOW_LED_PIN = 12;
 const int GREEN_LED_PIN = 11;
 const int RED_LED_PIN = 10;
@@ -55,7 +55,7 @@ void setup() {
     pinMode(YELLOW_LED_PIN, OUTPUT);
     pinMode(RED_LED_PIN, OUTPUT);
     pinMode(GREEN_LED_PIN, OUTPUT);
-    pinMode(UNLOCK_BUTTON_PIN, INPUT);
+    pinMode(LOCK_BUTTON_PIN, INPUT);
 
     Serial.begin(9600);
 
@@ -67,9 +67,9 @@ void setup() {
 void loop() {
 
     if (!isBoxLocked) {
-        int switchValue = digitalRead(UNLOCK_BUTTON_PIN);
+        int isLockedButtonPressed = digitalRead(LOCK_BUTTON_PIN) == HIGH;
 
-        if (switchValue == HIGH)
+        if (isLockedButtonPressed)
             lockBox();
     }
 
