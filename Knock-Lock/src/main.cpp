@@ -3,6 +3,9 @@
 
 Servo myServo;
 
+const int BAUD_RATE = 9600;
+const int SERVO_STARTING_POSITION = 0;
+const short SERVO_PIN = 9;
 const short PIEZO_PIN = A0;
 const short LOCK_BUTTON_PIN = 8;
 const short YELLOW_LED_PIN = 12;
@@ -63,16 +66,15 @@ void setPinsMode(const short (& pins)[S], bool mode) {
 }
 
 void setup() {
-    myServo.attach(9);
+    myServo.attach(SERVO_PIN);
 
     const short outputPins[5] = {YELLOW_LED_PIN, RED_LED_PIN, GREEN_LED_PIN, LOCK_BUTTON_PIN};
     setPinsMode<5>(outputPins, OUTPUT);
 
-    Serial.begin(9600);
+    Serial.begin(BAUD_RATE);
 
     digitalWrite(GREEN_LED_PIN, HIGH);
-    myServo.write(0);
-    Serial.println("The box is unlocked!");
+    myServo.write(SERVO_STARTING_POSITION);
 }
 
 void loop() {
