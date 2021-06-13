@@ -19,20 +19,15 @@ int numberOfKnocks = 0;
 
 bool isKnockValueValid(int value) {
 
-    if (value > KNOCK_THRESHOLD_VALUE) {
-        digitalWrite(YELLOW_LED_PIN, HIGH);
-        delay(50);
-        digitalWrite(YELLOW_LED_PIN, LOW);
-        Serial.print("Valid knock of value ");
-        Serial.println(value);
-
-        return true;
-    } else {
-        Serial.print("Bad knock value ");
-        Serial.println(value);
-
+    if (value < KNOCK_THRESHOLD_VALUE) {
         return false;
     }
+
+    digitalWrite(YELLOW_LED_PIN, HIGH);
+    delay(50);
+    digitalWrite(YELLOW_LED_PIN, LOW);
+
+    return true;
 }
 
 void lockBox() {
