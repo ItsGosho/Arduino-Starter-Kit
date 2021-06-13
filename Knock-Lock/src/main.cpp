@@ -24,7 +24,7 @@ bool isKnockValueValid(int value) {
     }
 
     digitalWrite(YELLOW_LED_PIN, HIGH);
-    delay(50);
+    delay(100);
     digitalWrite(YELLOW_LED_PIN, LOW);
 
     return true;
@@ -84,8 +84,10 @@ void loop() {
     if (isBoxLocked) {
         int piezoValue = analogRead(PIEZO_PIN);
 
-        if (!isKnocksEnough() && isKnockValueValid(piezoValue))
+        if (!isKnocksEnough() && isKnockValueValid(piezoValue)) {
+            Serial.println("INCREMENTING!");
             numberOfKnocks++;
+        }
 
         if (isKnocksEnough())
             unlockBox();
