@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Servo.h>
 #include "WrappedSerial.h"
+#include "ArduinoUtils.h"
 #include <avr8-stub.h>
 
 Servo myServo;
@@ -60,13 +61,6 @@ bool isKnocksEnough() {
     return numberOfKnocks >= UNLOCK_KNOCKS_REQUIRED;
 }
 
-template<int S>
-void setPinsMode(const short (& pins)[S], bool mode) {
-
-    for (int i = 0; i < S; ++i)
-        pinMode(pins[i], mode);
-}
-
 void setup() {
 
 #ifdef DEBUG
@@ -76,7 +70,7 @@ void setup() {
     myServo.attach(SERVO_PIN);
 
     const short outputPins[5] = {YELLOW_LED_PIN, RED_LED_PIN, GREEN_LED_PIN, LOCK_BUTTON_PIN};
-    setPinsMode<5>(outputPins, OUTPUT);
+    ArduinoUtils::setPinsMode<5>(outputPins, OUTPUT);
 
     WrappedSerial::begin(BAUD_RATE);
 
