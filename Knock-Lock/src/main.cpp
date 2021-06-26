@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <Servo.h>
+#include <avr8-stub.h>
 
 Servo myServo;
 
@@ -17,7 +18,11 @@ const int UNLOCK_KNOCKS_REQUIRED = 3;
 bool isBoxLocked = false;
 int numberOfKnocks = 0;
 
-//#define DISABLE_SERIAL
+#define DEBUG
+
+#ifdef DEBUG
+#define DISABLE_SERIAL
+#endif
 
 bool isKnockValueValid(int value) {
 
@@ -71,6 +76,11 @@ void setPinsMode(const short (& pins)[S], bool mode) {
 }
 
 void setup() {
+
+#ifdef DEBUG
+    debug_init();
+#endif
+
     myServo.attach(SERVO_PIN);
 
     const short outputPins[5] = {YELLOW_LED_PIN, RED_LED_PIN, GREEN_LED_PIN, LOCK_BUTTON_PIN};
