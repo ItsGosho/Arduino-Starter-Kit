@@ -33,12 +33,19 @@ bool isKnockValueValid(int value) {
     return true;
 }
 
+void println(const char* text) {
+
+#ifndef DISABLE_SERIAL
+    Serial.println(text);
+#endif
+}
+
 void lockBox() {
     isBoxLocked = true;
     digitalWrite(GREEN_LED_PIN, LOW);
     digitalWrite(RED_LED_PIN, HIGH);
     myServo.write(90);
-    Serial.println("The box is locked!");
+    println("The box is locked!");
     delay(1000);
 }
 
@@ -48,7 +55,7 @@ void unlockBox() {
     delay(20);
     digitalWrite(GREEN_LED_PIN, HIGH);
     digitalWrite(RED_LED_PIN, LOW);
-    Serial.println("The box is unlocked!");
+    println("The box is unlocked!");
     numberOfKnocks = 0;
 }
 
@@ -69,7 +76,9 @@ void setup() {
     const short outputPins[5] = {YELLOW_LED_PIN, RED_LED_PIN, GREEN_LED_PIN, LOCK_BUTTON_PIN};
     setPinsMode<5>(outputPins, OUTPUT);
 
+#ifndef DISABLE_SERIAL
     Serial.begin(BAUD_RATE);
+#endif
 
     digitalWrite(GREEN_LED_PIN, HIGH);
     myServo.write(SERVO_STARTING_POSITION);
