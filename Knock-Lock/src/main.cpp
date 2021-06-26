@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <Servo.h>
+#include "WrappedSerial.h"
 #include <avr8-stub.h>
 
 Servo myServo;
@@ -17,8 +18,6 @@ const int UNLOCK_KNOCKS_REQUIRED = 3;
 
 bool isBoxLocked = false;
 int numberOfKnocks = 0;
-
-#define DEBUG
 
 #ifdef DEBUG
 #define DISABLE_SERIAL
@@ -38,19 +37,12 @@ void blinkYellowLed() {
     digitalWrite(YELLOW_LED_PIN, LOW);
 }
 
-void println(const char* text) {
-
-#ifndef DISABLE_SERIAL
-    Serial.println(text);
-#endif
-}
-
 void lockBox() {
     isBoxLocked = true;
     digitalWrite(GREEN_LED_PIN, LOW);
     digitalWrite(RED_LED_PIN, HIGH);
     myServo.write(90);
-    println("The box is locked!");
+    WrappedSerial::println("The box is locked!");
     delay(1000);
 }
 
@@ -60,7 +52,7 @@ void unlockBox() {
     delay(20);
     digitalWrite(GREEN_LED_PIN, HIGH);
     digitalWrite(RED_LED_PIN, LOW);
-    println("The box is unlocked!");
+    WrappedSerial::println("The box is unlocked!");
     numberOfKnocks = 0;
 }
 
@@ -86,9 +78,7 @@ void setup() {
     const short outputPins[5] = {YELLOW_LED_PIN, RED_LED_PIN, GREEN_LED_PIN, LOCK_BUTTON_PIN};
     setPinsMode<5>(outputPins, OUTPUT);
 
-#ifndef DISABLE_SERIAL
-    Serial.begin(BAUD_RATE);
-#endif
+    WrappedSerial::begin(BAUD_RATE);
 
     digitalWrite(GREEN_LED_PIN, HIGH);
     myServo.write(SERVO_STARTING_POSITION);
