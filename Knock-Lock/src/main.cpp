@@ -19,18 +19,18 @@ int numberOfKnocks = 0;
 
 //#define DISABLE_SERIAL
 
-/*TODO: The function doesn't check if it is valid, it turns on the lights, that must moved outside of the function otherwise she doesn't many other things not related to her name*/
 bool isKnockValueValid(int value) {
 
-    if (value < KNOCK_THRESHOLD_VALUE) {
+    if (value < KNOCK_THRESHOLD_VALUE)
         return false;
-    }
 
+    return true;
+}
+
+void blinkYellowLed() {
     digitalWrite(YELLOW_LED_PIN, HIGH);
     delay(100);
     digitalWrite(YELLOW_LED_PIN, LOW);
-
-    return true;
 }
 
 void println(const char* text) {
@@ -97,6 +97,7 @@ void loop() {
         int piezoValue = analogRead(PIEZO_PIN);
 
         if (!isKnocksEnough() && isKnockValueValid(piezoValue)) {
+            blinkYellowLed();
             numberOfKnocks++;
         }
 
