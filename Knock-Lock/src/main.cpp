@@ -32,12 +32,6 @@ bool isKnockValueValid(int value) {
     return true;
 }
 
-void blinkYellowLed() {
-    digitalWrite(YELLOW_LED_PIN, HIGH);
-    delay(100);
-    digitalWrite(YELLOW_LED_PIN, LOW);
-}
-
 void lockBox() {
     isBoxLocked = true;
     digitalWrite(GREEN_LED_PIN, LOW);
@@ -70,7 +64,7 @@ void setup() {
     myServo.attach(SERVO_PIN);
 
     const short outputPins[5] = {YELLOW_LED_PIN, RED_LED_PIN, GREEN_LED_PIN, LOCK_BUTTON_PIN};
-    ArduinoUtils::setPinsMode<5>(outputPins, OUTPUT);
+    ArduinoUtils::setPinsMode(outputPins, OUTPUT);
 
     WrappedSerial::begin(BAUD_RATE);
 
@@ -91,7 +85,7 @@ void loop() {
         int piezoValue = analogRead(PIEZO_PIN);
 
         if (!isKnocksEnough() && isKnockValueValid(piezoValue)) {
-            blinkYellowLed();
+            ArduinoUtils::blinkLed(YELLOW_LED_PIN);
             numberOfKnocks++;
         }
 

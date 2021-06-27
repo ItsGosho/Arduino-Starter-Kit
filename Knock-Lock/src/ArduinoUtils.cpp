@@ -1,9 +1,14 @@
 #include "ArduinoUtils.h"
+#include <Arduino.h>
 
+const short BLINK_LED_DEFAULT_INTERVAL_MS = 100;
 
-template<int S>
-void ArduinoUtils::setPinsMode(const short (& pins)[S], bool mode) {
+void ArduinoUtils::blinkLed(short ledPin) {
+    blinkLed(ledPin, BLINK_LED_DEFAULT_INTERVAL_MS);
+}
 
-    for (int i = 0; i < S; ++i)
-        pinMode(pins[i], mode);
+void ArduinoUtils::blinkLed(short ledPin, int interval) {
+    digitalWrite(ledPin, HIGH);
+    delay(interval);
+    digitalWrite(ledPin, LOW);
 }
