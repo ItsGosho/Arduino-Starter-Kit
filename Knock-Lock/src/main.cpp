@@ -25,11 +25,7 @@ int numberOfKnocks = 0;
 #endif
 
 bool isKnockValueValid(int value) {
-
-    if (value < KNOCK_THRESHOLD_VALUE)
-        return false;
-
-    return true;
+    return value >= KNOCK_THRESHOLD_VALUE;
 }
 
 void lockBox() {
