@@ -111,7 +111,7 @@ void tryUnlockBox(const int& piezoValue) {
 
         ArduinoUtils::blinkLed(YELLOW_LED_PIN);
         numberOfKnocks++;
-        Serial.println(numberOfKnocks);
+        LCDHelper::writeKnocks(lcd, numberOfKnocks);
         lastKnockMS = millis();
     }
 
@@ -161,9 +161,21 @@ void setup() {
             B00000
     };
 
-    lcd.createChar(LCD_LOCKED_CHAR, lcdLockedSymbol);
-    lcd.createChar(LCD_UNLOCKED_CHAR, lcdUnlockedSymbol);
-    lcd.createChar(LCD_LOADING_CHAR, lcdLoadingSymbol);
+    byte lcdCheckSymbol[] = {
+            B00000,
+            B00001,
+            B00011,
+            B10110,
+            B11100,
+            B01000,
+            B00000,
+            B00000
+    };
+
+    lcd.createChar(LCD_LOCKED_SYMBOL, lcdLockedSymbol);
+    lcd.createChar(LCD_UNLOCKED_SYMBOL, lcdUnlockedSymbol);
+    lcd.createChar(LCD_LOADING_SYMBOL, lcdLoadingSymbol);
+    lcd.createChar(LCD_CHECK_SYMBOL, lcdCheckSymbol);
     lcd.home();
 
     const short outputPins[5] = {YELLOW_LED_PIN, RED_LED_PIN, GREEN_LED_PIN, LOCK_BUTTON_PIN};
