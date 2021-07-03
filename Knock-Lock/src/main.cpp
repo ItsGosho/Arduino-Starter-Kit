@@ -9,7 +9,8 @@ Servo myServo;
 KnockChecker knockChecker;
 
 const int BAUD_RATE = 9600;
-const int SERVO_STARTING_POSITION = 0;
+const int SERVO_LOCKED_POSITION = 90;
+const int SERVO_UNLOCKED_POSITION = 0;
 const short SERVO_PIN = 9;
 const short PIEZO_PIN = A0;
 const short LOCK_BUTTON_PIN = 8;
@@ -28,7 +29,7 @@ const KnockTimingRequirement knockTimingRequirements[5] = {
         {1000, 5000}
 };
 
-bool isBoxLocked = false;
+bool isBoxLocked = true;
 int numberOfKnocks = 0;
 unsigned long lastKnockMS = 0;
 
@@ -42,7 +43,7 @@ unsigned long lastKnockMS = 0;
 
 void lockBox() {
 
-    myServo.write(90);
+    myServo.write(SERVO_LOCKED_POSITION);
     delay(450);
 
     isBoxLocked = true;
@@ -77,7 +78,7 @@ bool isKnocksEnough() {
 
 void unlockBox() {
 
-    myServo.write(0);
+    myServo.write(SERVO_UNLOCKED_POSITION);
     delay(450);
 
     isBoxLocked = false;
@@ -120,9 +121,7 @@ void setup() {
     ArduinoUtils::setPinsMode(outputPins, OUTPUT);
 
     WrappedSerial::begin(BAUD_RATE);
-
-    digitalWrite(GREEN_LED_PIN, HIGH);
-    myServo.write(SERVO_STARTING_POSITION);
+    lockBox();
 }
 
 void loop() {
