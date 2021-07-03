@@ -29,22 +29,26 @@ bool isKnockValueValid(int value) {
 }
 
 void lockBox() {
+
+    myServo.write(90);
+    delay(450);
+
     isBoxLocked = true;
     digitalWrite(GREEN_LED_PIN, LOW);
     digitalWrite(RED_LED_PIN, HIGH);
-    myServo.write(90);
     WrappedSerial::println("The box is locked!");
-    delay(1000);
 }
 
 void unlockBox() {
-    isBoxLocked = false;
+
     myServo.write(0);
-    delay(20);
+    delay(450);
+
+    isBoxLocked = false;
     digitalWrite(GREEN_LED_PIN, HIGH);
     digitalWrite(RED_LED_PIN, LOW);
-    WrappedSerial::println("The box is unlocked!");
     numberOfKnocks = 0;
+    WrappedSerial::println("The box is unlocked!");
 }
 
 bool isKnocksEnough() {
@@ -80,6 +84,7 @@ void loop() {
     if (isBoxLocked) {
         int piezoValue = analogRead(PIEZO_PIN);
 
+        Serial.println(piezoValue);
         if (!isKnocksEnough() && isKnockValueValid(piezoValue)) {
             ArduinoUtils::blinkLed(YELLOW_LED_PIN);
             numberOfKnocks++;
