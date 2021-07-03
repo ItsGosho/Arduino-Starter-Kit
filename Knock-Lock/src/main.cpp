@@ -6,8 +6,11 @@
 #include <avr8-stub.h>
 #include "KnockChecker.h"
 
-Servo myServo;
-KnockChecker knockChecker; //TODO:
+//#define DEBUG
+
+#ifdef DEBUG
+#define DISABLE_SERIAL
+#endif
 
 #define BAUD_RATE 9600
 #define SERVO_LOCKED_POSITION 90
@@ -20,6 +23,12 @@ KnockChecker knockChecker; //TODO:
 #define RED_LED_PIN 10
 #define KNOCK_THRESHOLD_VALUE 10
 #define UNLOCK_KNOCKS_REQUIRED 5
+#define LCD_RS_PIN 7
+#define LCD_EN_PIN 6
+#define LCD_D0_PIN 5
+#define LCD_D1_PIN 4
+#define LCD_D2_PIN 3
+#define LCD_D3_PIN 2
 
 //TODO: Спрямо предходният. То се води по тях когато получи Knock
 const KnockTimingRequirement knockTimingRequirements[5] = {
@@ -34,11 +43,9 @@ bool isBoxLocked = true;
 int numberOfKnocks = 0;
 unsigned long lastKnockMS = 0;
 
-//#define DEBUG
-
-#ifdef DEBUG
-#define DISABLE_SERIAL
-#endif
+Servo myServo;
+LiquidCrystal lcd(LCD_RS_PIN, LCD_EN_PIN, LCD_D0_PIN, LCD_D1_PIN, LCD_D2_PIN, LCD_D3_PIN);
+KnockChecker knockChecker; //TODO:
 
 //ToDO: MAKE IT Locked by default
 
