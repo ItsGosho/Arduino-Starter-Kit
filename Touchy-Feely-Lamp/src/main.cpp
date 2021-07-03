@@ -1,24 +1,28 @@
 #include <Arduino.h>
 #include <CapacitiveSensor.h>
 
-CapacitiveSensor capacitiveSensor(11, 10);
+#define BAUD_RATE 9600
+#define LED_PIN 9
+#define RECEIVE_PIN 10
+#define SENDER_PIN 11
+#define THRESHOLD 1000
+#define SENSOR_SAMPLES 30
 
-int threshold = 1000;
-const int ledPin = 9;
+CapacitiveSensor capacitiveSensor(SENDER_PIN, RECEIVE_PIN);
 
 void setup() {
-    Serial.begin(9600);
-    pinMode(ledPin, OUTPUT);
+    Serial.begin(BAUD_RATE);
+    pinMode(LED_PIN, OUTPUT);
 }
 
 void loop() {
-    long sensorValue = capacitiveSensor.capacitiveSensor(30);
+    long sensorValue = capacitiveSensor.capacitiveSensor(SENSOR_SAMPLES);
     Serial.println(sensorValue);
 
-    if (sensorValue > threshold) {
-        digitalWrite(ledPin, HIGH);
+    if (sensorValue > THRESHOLD) {
+        digitalWrite(LED_PIN, HIGH);
     } else {
-        digitalWrite(ledPin, LOW);
+        digitalWrite(LED_PIN, LOW);
     }
 
     delay(10);
