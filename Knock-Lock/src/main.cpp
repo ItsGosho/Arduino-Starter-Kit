@@ -5,6 +5,7 @@
 #include "ArduinoUtils.h"
 #include <avr8-stub.h>
 #include "KnockChecker.h"
+#include "LCDHelper.h"
 
 //#define DEBUG
 
@@ -29,6 +30,8 @@
 #define LCD_D1_PIN 4
 #define LCD_D2_PIN 3
 #define LCD_D3_PIN 2
+#define LCD_COLS 16
+#define LCD_ROWS 1
 
 //TODO: Спрямо предходният. То се води по тях когато получи Knock
 const KnockTimingRequirement knockTimingRequirements[5] = {
@@ -47,11 +50,9 @@ Servo myServo;
 LiquidCrystal lcd(LCD_RS_PIN, LCD_EN_PIN, LCD_D0_PIN, LCD_D1_PIN, LCD_D2_PIN, LCD_D3_PIN);
 KnockChecker knockChecker; //TODO:
 
-//ToDO: MAKE IT Locked by default
-
 void lockBox() {
-
-    myServo.write( SERVO_LOCKED_POSITION);
+    LCDHelper::writeLocking(lcd);
+    myServo.write(SERVO_LOCKED_POSITION);
     delay(450);
 
     isBoxLocked = true;
@@ -59,6 +60,7 @@ void lockBox() {
     digitalWrite(RED_LED_PIN, HIGH);
     numberOfKnocks = 0;
     WrappedSerial::println("The box is locked!");
+    LCDHelper::writeLocked(lcd);
 }
 
 bool isKnockThresholdPassed(const int& value) {
@@ -85,14 +87,14 @@ bool isKnocksEnough() {
 }
 
 void unlockBox() {
-
-    myServo.write( SERVO_UNLOCKED_POSITION);
+    LCDHelper::writeUnlocking(lcd);
+    myServo.write(SERVO_UNLOCKED_POSITION);
     delay(450);
 
     isBoxLocked = false;
     digitalWrite(GREEN_LED_PIN, HIGH);
     digitalWrite(RED_LED_PIN, LOW);
-    WrappedSerial::println("The box is unlocked!");
+    LCDHelper::writeUnlocked(lcd);
 }
 
 void tryUnlockBox(const int& piezoValue) {
@@ -124,6 +126,45 @@ void setup() {
 #endif
 
     myServo.attach(SERVO_PIN);
+    lcd.begin(LCD_COLS, LCD_ROWS);
+
+    byte lcdLockedSymbol[] = {
+            B01110,
+            B10001,
+            B10001,
+            B10001,
+            B11111,
+            B11011,
+            B11111,
+            B11111
+    };
+
+    byte lcdUnlockedSymbol[] = {
+            B01110,
+            B10001,
+            B10000,
+            B10000,
+            B11111,
+            B11011,
+            B11111,
+            B11111
+    };
+
+    byte lcdLoadingSymbol[] = {
+            B00100,
+            B01010,
+            B10001,
+            B10101,
+            B10110,
+            B10000,
+            B01110,
+            B00000
+    };
+
+    lcd.createChar(LCD_LOCKED_CHAR, lcdLockedSymbol);
+    lcd.createChar(LCD_UNLOCKED_CHAR, lcdUnlockedSymbol);
+    lcd.createChar(LCD_LOADING_CHAR, lcdLoadingSymbol);
+    lcd.home();
 
     const short outputPins[5] = {YELLOW_LED_PIN, RED_LED_PIN, GREEN_LED_PIN, LOCK_BUTTON_PIN};
     ArduinoUtils::setPinsMode(outputPins, OUTPUT);
