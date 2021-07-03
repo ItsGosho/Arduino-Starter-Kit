@@ -20,12 +20,12 @@ const int KNOCK_THRESHOLD_VALUE = 10;
 const int UNLOCK_KNOCKS_REQUIRED = 5;
 
 //TODO: Спрямо предходният. То се води по тях когато получи Knock
-const KnockRequirement knockRequirements[5] = {
-        {-1, -1},
-        {1000,5000},
-        {0,1000},
-        {0,1000},
-        {1000,5000}
+const KnockTimingRequirement knockTimingRequirements[5] = {
+        {-1,   -1},
+        {1000, 5000},
+        {0,    1000},
+        {0,    1000},
+        {1000, 5000}
 };
 
 bool isBoxLocked = false;
@@ -52,34 +52,27 @@ void lockBox() {
     WrappedSerial::println("The box is locked!");
 }
 
-bool isKnockValueValid(int value) {
+bool isKnockThresholdPassed(const int& value) {
+    return value >= KNOCK_THRESHOLD_VALUE;
+}
 
-    if(value < KNOCK_THRESHOLD_VALUE)
-        return false;
+bool isKnockTimingPassed() {
+    KnockTimingRequirement knockRequirement = knockTimingRequirements[numberOfKnocks];
 
-    int knockAttempt = numberOfKnocks + 1;
-    //Ако няма такъв index директно пускам
-    KnockRequirement knockRequirement = knockRequirements[knockAttempt - 1];
-
-    if(knockRequirement.minTimeMS == -1 && knockRequirement.maxTimeMS == -1)
+    if (knockRequirement.minTimeMS == -1 && knockRequirement.maxTimeMS == -1)
         return true;
 
     unsigned long currentTime = millis();
     unsigned long timePassSinceLastKnock = currentTime - lastKnockMS;
 
-    if(timePassSinceLastKnock < knockRequirement.minTimeMS || timePassSinceLastKnock > knockRequirement.maxTimeMS) {
-        Serial.println("Requirements not passed: min, max");
-        Serial.println(knockRequirement.minTimeMS);
-        Serial.println(knockRequirement.maxTimeMS);
-        Serial.println("Instead times were: current, lastKnock, time passed (compared value)");
-        Serial.println(currentTime);
-        Serial.println(lastKnockMS);
-        Serial.println(timePassSinceLastKnock);
-        lockBox();
+    if (timePassSinceLastKnock < knockRequirement.minTimeMS || timePassSinceLastKnock > knockRequirement.maxTimeMS)
         return false;
-    }
 
     return true;
+}
+
+bool isKnocksEnough() {
+    return numberOfKnocks >= UNLOCK_KNOCKS_REQUIRED;
 }
 
 void unlockBox() {
@@ -93,8 +86,26 @@ void unlockBox() {
     WrappedSerial::println("The box is unlocked!");
 }
 
-bool isKnocksEnough() {
-    return numberOfKnocks >= UNLOCK_KNOCKS_REQUIRED;
+void tryUnlockBox(const int& piezoValue) {
+
+    if (!isKnocksEnough()) {
+
+        if (!isKnockThresholdPassed(piezoValue))
+            return;
+
+        if (!isKnockTimingPassed()) {
+            lockBox();
+            return;
+        }
+
+        ArduinoUtils::blinkLed(YELLOW_LED_PIN);
+        numberOfKnocks++;
+        Serial.println(numberOfKnocks);
+        lastKnockMS = millis();
+    }
+
+    if (isKnocksEnough())
+        unlockBox();
 }
 
 void setup() {
@@ -126,14 +137,6 @@ void loop() {
     if (isBoxLocked) {
         int piezoValue = analogRead(PIEZO_PIN);
 
-        if (!isKnocksEnough() && isKnockValueValid(piezoValue)) {
-            ArduinoUtils::blinkLed(YELLOW_LED_PIN);
-            numberOfKnocks++;
-            Serial.println(numberOfKnocks);
-            lastKnockMS = millis();
-        }
-
-        if (isKnocksEnough())
-            unlockBox();
+        tryUnlockBox(piezoValue);
     }
 }

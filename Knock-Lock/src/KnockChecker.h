@@ -1,7 +1,7 @@
 #ifndef KNOCK_LOCK_KNOCKCHECKER_H
 #define KNOCK_LOCK_KNOCKCHECKER_H
 
-struct KnockRequirement {
+struct KnockTimingRequirement {
     int minTimeMS;
     int maxTimeMS;
 };
