@@ -4,7 +4,6 @@
 #include "WrappedSerial.h"
 #include "ArduinoUtils.h"
 #include <avr8-stub.h>
-#include "KnockChecker.h"
 #include "LCDHelper.h"
 
 //#define DEBUG
@@ -32,6 +31,12 @@
 #define LCD_D3_PIN 2
 
 //TODO: Спрямо предходният. То се води по тях когато получи Knock
+
+struct KnockTimingRequirement {
+    int minTimeMS;
+    int maxTimeMS;
+};
+
 const KnockTimingRequirement knockTimingRequirements[5] = {
         {-1,   -1},
         {1000, 5000},
@@ -46,7 +51,6 @@ unsigned long lastKnockMS = 0;
 
 Servo myServo;
 LCDHelper lcdHelper(LCD_RS_PIN, LCD_EN_PIN, LCD_D0_PIN, LCD_D1_PIN, LCD_D2_PIN, LCD_D3_PIN);
-KnockChecker knockChecker; //TODO:
 
 void lockBox() {
     lcdHelper.writeLocking();

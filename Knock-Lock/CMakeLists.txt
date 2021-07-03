@@ -30,4 +30,4 @@ add_custom_target(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-add_executable(Z_DUMMY_TARGET ${SRC_LIST} src/WrappedSerial.cpp src/ArduinoUtils.cpp src/ArduinoUtils.h src/KnockChecker.cpp src/KnockChecker.h src/LCDHelper.cpp src/LCDHelper.h)
+add_executable(Z_DUMMY_TARGET ${SRC_LIST} src/WrappedSerial.cpp src/ArduinoUtils.cpp src/ArduinoUtils.h src/LCDHelper.cpp src/LCDHelper.h)
