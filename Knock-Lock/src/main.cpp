@@ -3,8 +3,10 @@
 #include "WrappedSerial.h"
 #include "ArduinoUtils.h"
 #include <avr8-stub.h>
+#include "KnockChecker.h"
 
 Servo myServo;
+KnockChecker knockChecker;
 
 const int BAUD_RATE = 9600;
 const int SERVO_STARTING_POSITION = 0;
@@ -15,18 +17,28 @@ const short YELLOW_LED_PIN = 12;
 const short GREEN_LED_PIN = 11;
 const short RED_LED_PIN = 10;
 const int KNOCK_THRESHOLD_VALUE = 10;
-const int UNLOCK_KNOCKS_REQUIRED = 3;
+const int UNLOCK_KNOCKS_REQUIRED = 5;
+
+//TODO: Спрямо предходният. То се води по тях когато получи Knock
+const KnockRequirement knockRequirements[5] = {
+        {-1, -1},
+        {1000,5000},
+        {0,1000},
+        {0,1000},
+        {1000,5000}
+};
 
 bool isBoxLocked = false;
 int numberOfKnocks = 0;
+unsigned long lastKnockMS = 0;
+
+//#define DEBUG
 
 #ifdef DEBUG
 #define DISABLE_SERIAL
 #endif
 
-bool isKnockValueValid(int value) {
-    return value >= KNOCK_THRESHOLD_VALUE;
-}
+//ToDO: MAKE IT Locked by default
 
 void lockBox() {
 
@@ -36,7 +48,38 @@ void lockBox() {
     isBoxLocked = true;
     digitalWrite(GREEN_LED_PIN, LOW);
     digitalWrite(RED_LED_PIN, HIGH);
+    numberOfKnocks = 0;
     WrappedSerial::println("The box is locked!");
+}
+
+bool isKnockValueValid(int value) {
+
+    if(value < KNOCK_THRESHOLD_VALUE)
+        return false;
+
+    int knockAttempt = numberOfKnocks + 1;
+    //Ако няма такъв index директно пускам
+    KnockRequirement knockRequirement = knockRequirements[knockAttempt - 1];
+
+    if(knockRequirement.minTimeMS == -1 && knockRequirement.maxTimeMS == -1)
+        return true;
+
+    unsigned long currentTime = millis();
+    unsigned long timePassSinceLastKnock = currentTime - lastKnockMS;
+
+    if(timePassSinceLastKnock < knockRequirement.minTimeMS || timePassSinceLastKnock > knockRequirement.maxTimeMS) {
+        Serial.println("Requirements not passed: min, max");
+        Serial.println(knockRequirement.minTimeMS);
+        Serial.println(knockRequirement.maxTimeMS);
+        Serial.println("Instead times were: current, lastKnock, time passed (compared value)");
+        Serial.println(currentTime);
+        Serial.println(lastKnockMS);
+        Serial.println(timePassSinceLastKnock);
+        lockBox();
+        return false;
+    }
+
+    return true;
 }
 
 void unlockBox() {
@@ -47,7 +90,6 @@ void unlockBox() {
     isBoxLocked = false;
     digitalWrite(GREEN_LED_PIN, HIGH);
     digitalWrite(RED_LED_PIN, LOW);
-    numberOfKnocks = 0;
     WrappedSerial::println("The box is unlocked!");
 }
 
@@ -84,10 +126,11 @@ void loop() {
     if (isBoxLocked) {
         int piezoValue = analogRead(PIEZO_PIN);
 
-        Serial.println(piezoValue);
         if (!isKnocksEnough() && isKnockValueValid(piezoValue)) {
             ArduinoUtils::blinkLed(YELLOW_LED_PIN);
             numberOfKnocks++;
+            Serial.println(numberOfKnocks);
+            lastKnockMS = millis();
         }
 
         if (isKnocksEnough())
