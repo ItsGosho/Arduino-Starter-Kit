@@ -1,24 +1,25 @@
 #include <Arduino.h>
 #include <Servo.h>
+#include <LiquidCrystal.h>
 #include "WrappedSerial.h"
 #include "ArduinoUtils.h"
 #include <avr8-stub.h>
 #include "KnockChecker.h"
 
 Servo myServo;
-KnockChecker knockChecker;
+KnockChecker knockChecker; //TODO:
 
-const int BAUD_RATE = 9600;
-const int SERVO_LOCKED_POSITION = 90;
-const int SERVO_UNLOCKED_POSITION = 0;
-const short SERVO_PIN = 9;
-const short PIEZO_PIN = A0;
-const short LOCK_BUTTON_PIN = 8;
-const short YELLOW_LED_PIN = 12;
-const short GREEN_LED_PIN = 11;
-const short RED_LED_PIN = 10;
-const int KNOCK_THRESHOLD_VALUE = 10;
-const int UNLOCK_KNOCKS_REQUIRED = 5;
+#define BAUD_RATE 9600
+#define SERVO_LOCKED_POSITION 90
+#define SERVO_UNLOCKED_POSITION 0
+#define SERVO_PIN 9
+#define PIEZO_PIN A0
+#define LOCK_BUTTON_PIN 8
+#define YELLOW_LED_PIN 12
+#define GREEN_LED_PIN 11
+#define RED_LED_PIN 10
+#define KNOCK_THRESHOLD_VALUE 10
+#define UNLOCK_KNOCKS_REQUIRED 5
 
 //TODO: Спрямо предходният. То се води по тях когато получи Knock
 const KnockTimingRequirement knockTimingRequirements[5] = {
@@ -43,7 +44,7 @@ unsigned long lastKnockMS = 0;
 
 void lockBox() {
 
-    myServo.write(SERVO_LOCKED_POSITION);
+    myServo.write( SERVO_LOCKED_POSITION);
     delay(450);
 
     isBoxLocked = true;
@@ -78,7 +79,7 @@ bool isKnocksEnough() {
 
 void unlockBox() {
 
-    myServo.write(SERVO_UNLOCKED_POSITION);
+    myServo.write( SERVO_UNLOCKED_POSITION);
     delay(450);
 
     isBoxLocked = false;
