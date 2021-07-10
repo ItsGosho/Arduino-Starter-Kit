@@ -1,10 +1,16 @@
 #include <Arduino.h>
 
+#define BAUD_RATE 9600
+#define POTENTIOMETER_PIN A0
+
 void setup() {
-    Serial.begin(9600);
+    Serial.begin(BAUD_RATE);
 }
 
 void loop() {
-    Serial.write(analogRead(A0) / 4);
+    int potentiometerValue = analogRead(POTENTIOMETER_PIN);
+    int serialWriteValue = potentiometerValue / 4;
+
+    Serial.write(serialWriteValue);
     delay(1);
 }
